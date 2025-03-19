@@ -1,0 +1,12 @@
+laspy[laszip]~=2.5.4
+numpy~=1.26.4
+open3d~=0.18.0
+opencv-python~=4.11.0
+plyfile~=1.1
+pypcd4~=1.1.0
+pyyaml~=6.0.2
+rosbags~=0.10.6
+scipy~=1.15.1
+shapely~=2.0.7
+tifffile~=2025.1.10
+tqdm~=4.67.1

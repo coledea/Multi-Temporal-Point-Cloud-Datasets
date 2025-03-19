@@ -1,0 +1,175 @@
+---
+#=========================================
+#           EXPLANATIONS
+#=========================================
+#  ${{something}} denotes a placeholder that gets replaced during parsing. The following three placeholder are available:
+#
+#  - ${{dataset_root}} gets replaced by the value of dataset_root. 
+#    Here, we assume that all datasets are placed in a "data" folder at the root of this repository.
+#    You can also store the datasets in different places, but then you have to specify the dataset root path for each dataset separately.
+#
+#  - ${{dataset_name}} gets replaced by the dataset name, as specified as key for the dataset
+#
+#  - ${{pointclouds}} gets either replaced by an empty string, or in the case of datasets with a create_pointclouds script, "pointclouds"
+#
+
+#=========================================
+#           DEFAULT SETTINGS
+#=========================================
+# The default dataset root folder that is assumed for each dataset that does not specify its root explicitly
+dataset_root: ./data/${{dataset_name}}
+
+# Default processing steps and arguments that are used when specifying 'default' for a dataset.
+# If a script does not exist for a dataset, it is skipped.
+processing_steps:
+  - script: create_pointclouds
+    arguments:
+      input_path: ${{dataset_root}}
+      --output_folder: ${{dataset_root}}/${{pointclouds}}
+  - script: compute_statistics
+    arguments:
+      input_path: ${{dataset_root}}/${{pointclouds}}
+      --output_log: ${{dataset_root}}/statistics.txt
+  - script: compute_avg_change_points
+    arguments:
+      input_path: ${{dataset_root}}/${{pointclouds}}
+      --output_log: ${{dataset_root}}/avg_change.txt
+  - script: create_2d_renderings
+    arguments:
+      input_path: ${{dataset_root}}/${{pointclouds}}
+      output_folder: ${{dataset_root}}/renderings
+
+---
+#=========================================
+#          DATASETS TO PROCESS
+#=========================================
+
+# Datasets with default scripts and arguments
+4D_Plant_Registration: default
+AbenbergALS: default
+AgScan3D_Viticulture: default
+AHK_1: default
+AHK_2: default
+Bad_Frankenhausen: default
+Belvedere_Glacier: default
+BLT: default
+Boreas: default
+Change3D: default
+ChangeDet: default
+CoastScan_Combined: default
+Evo_TLS: default
+Fehr_et_al: default
+Fekete_and_Cserep: default
+Findelengletscher: default
+Hessigheim3D: default
+Holuhraun: default
+Kalkkinen: default
+Kijkduin: default
+KTH-3D-TOTAL: default
+KTH_Longterm: default
+KTH_Longterm_Labels: default
+KTH_Meta-rooms: default
+KTH_Moving_Objects: default
+LAST-Straw: default
+LiPheStream: default
+M3C2-EP: default
+Mariakerke_Bad: default
+Masala_Overnight: default
+MHT_Building: default
+MulRan: default
+NCLT: default
+Nesslrinna: default
+Noordwijk: default
+NTU_VIRAL: default
+Object_Change_Detection: default
+OpenLORIS-Scene: default
+Pheno4D: default
+QALIDAR: default
+Riparian_Vegetation: default
+Rotmoos: default
+Schmid_et_al: default
+Schneeferner: default
+SMARS: default
+SZTAKI-Change3D: default
+TorWIC-Mapping: default
+TorWIC-SLAM: default
+Trail_Valley_Creek: default
+Underwood_et_al: default
+Urb3DCD-v1: default
+Urb3DCD-v2: default
+Urb3DCD-cls: default
+USyd_Campus: default
+Waikiki_Beach: default
+Zhang_et_al: default
+
+# Datasets with either additional scripts or non-default arguments
+3DCD:
+  processing_steps:
+    - script: create_pointclouds
+      arguments:
+        input_path: ${{dataset_root}}
+        --output_folder: ${{dataset_root}}/${{pointclouds}}
+    - script: compute_statistics
+      arguments:
+        input_path: ${{dataset_root}}/${{pointclouds}}
+        --output_log: ${{dataset_root}}/statistics.txt
+    - script: compute_avg_change_points
+      arguments:
+        input_path: ${{dataset_root}}
+        --output_log: ${{dataset_root}}/avg_change.txt
+
+3RScan:
+  processing_steps:
+    - script: create_pointclouds
+      arguments:
+        input_path: ${{dataset_root}}
+        --output_folder: ${{dataset_root}}/${{pointclouds}}
+    - script: compute_statistics
+      arguments:
+        input_path: ${{dataset_root}}/${{pointclouds}}
+        --output_log: ${{dataset_root}}/statistics.txt
+    - script: sample_pointclouds
+      arguments:
+        input_path: ${{dataset_root}}
+    - script: compute_avg_change_points
+      arguments:
+        input_path: ${{dataset_root}}/pointclouds_sampled
+        json_path_3rscan: ${{dataset_root}}/raw/3RScan.json
+        --output_log: ${{dataset_root}}/avg_change.txt
+
+ChangeSim:
+  processing_steps:
+    - script: create_pointclouds
+      arguments:
+        input_path: ${{dataset_root}}
+        --output_folder: ${{dataset_root}}/${{pointclouds}}
+    - script: compute_statistics
+      arguments:
+        input_path: ${{dataset_root}}/${{pointclouds}}
+        --output_log: ${{dataset_root}}/statistics.txt
+    - script: compute_avg_change_points
+      arguments:
+        input_path: ${{dataset_root}}
+        --output_log: ${{dataset_root}}/avg_change.txt
+
+# Requires Matlab, which not everyone might want to install.
+#Eschikon:
+#  processing_steps:
+#    - script: create_pointclouds
+#      arguments:
+#        input_path: ${{dataset_root}}
+#        --output_folder: ${{dataset_root}}/converted_pointclouds
+#    - script: compute_statistics
+#      arguments:
+#        input_path: ${{dataset_root}}/converted_pointclouds
+#        --output_log: ${{dataset_root}}/statistics.txt
+
+SZTAKI-CityCDLoc:
+  processing_steps:
+    - script: create_pointclouds
+      arguments:
+        input_path: ${{dataset_root}}
+    - script: compute_statistics
+      arguments:
+        input_path: ${{dataset_root}}
+        --output_log: ${{dataset_root}}/statistics.txt

@@ -1,0 +1,2 @@
+pandas~=2.2.3
+datashader~=0.17.0

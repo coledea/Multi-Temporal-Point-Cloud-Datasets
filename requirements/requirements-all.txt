@@ -1,0 +1,8 @@
+-r requirements-base.txt
+-r requirements-3RScan.txt
+-r requirements-Boreas.txt
+-r requirements-KTH_Longterm.txt
+-r requirements-KTH-3D-TOTAL.txt
+-r requirements-NCLT.txt
+-r requirements-OpenLORIS-Scene.txt
+-r requirements-Waikiki_Beach.txt

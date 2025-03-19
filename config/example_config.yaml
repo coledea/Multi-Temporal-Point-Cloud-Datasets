@@ -1,0 +1,46 @@
+---
+#=========================================
+#           EXPLANATIONS
+#=========================================
+#  ${{something}} denotes a placeholder that gets replaced during parsing. The following three placeholder are available:
+#
+#  - ${{dataset_root}} gets replaced by the value of dataset_root. 
+#    Here, we assume that all datasets are placed in a "data" folder at the root of this repository.
+#    You can also store the datasets in different places, but then you have to specify the dataset root path for each dataset separately.
+#
+#  - ${{dataset_name}} gets replaced by the dataset name, as specified as key for the dataset
+#
+#  - ${{pointclouds}} gets either replaced by an empty string, or in the case of datasets with a create_pointclouds script, "pointclouds"
+#
+
+
+#=========================================
+#          DATASETS TO PROCESS
+#=========================================
+
+# This is an example for a detailed processing configuration for two datasets.
+# For the available arguments, please refer to the individual scripts in the "datasets" folder.
+NCLT:
+  dataset_root: "C:\\Projects\\Multi-Temporal-Point-Cloud-Datasets\\data\\NCLT"
+  processing_steps:
+    - script: create_pointclouds
+      arguments:
+        input_path: ${{dataset_root}}
+        --output_folder: ${{dataset_root}}/${{pointclouds}}
+        --output_format: LAS
+        --inclusion_list: "2012-01-22 2012-05-26"
+        --project_images: ""
+        --tile_size: 40
+    - script: compute_statistics
+      arguments:
+        input_path: ${{dataset_root}}/${{pointclouds}}
+        --output_log: ${{dataset_root}}/statistics.txt
+
+Fehr_et_al:
+  dataset_root: "C:\\Projects\\Multi-Temporal-Point-Cloud-Datasets\\data\\Fehr_et_al"
+  processing_steps:
+    - script: create_pointclouds
+      arguments:
+        input_path: ${{dataset_root}}
+        --output_folder: ${{dataset_root}}/extracted
+        --output_format: PLY
