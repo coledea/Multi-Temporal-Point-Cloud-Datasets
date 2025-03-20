@@ -6,19 +6,19 @@
 
 
 ## Notes
-  - For the KG scene, in addition to the raw data, also rosbags with synchronized sensor outputs are available.
-  - Poses are provided only for the KG scene, while the Riseholme data only contains odometry and IMU data. To reconstruct a unified point cloud from this data, a SLAM solution has to be used (we tested [FasterLIO](https://github.com/gaoxiang12/faster-lio), which worked reasonably well). However, as argued in the paper, we only used the KG scene for our computations.
-  - For the KG scene, the paper and the website list 11 epochs. At the same time, the website states that there are only 10 epochs. We found that the synchronized rosbag for May 18th (`kg_may_18.bag`) is corrupted and reindexing (using `rosbag reindex`) discards most of its data. Also, this is the only date, for which raw data is not available. Therefore, in the end there are 10 usable epochs available.
-  - In the downloadable files, `june_22` is missing from the synchronized rosbags and `kg_september_09.bag` seems to be corrupted. For these dates, we used the raw data for our computations.
-  - A person walking behind the robot causes noise in the final point cloud if not removed
-  - Mapping the color images to the laser scans often results in the tip of the vines receiving the color of the sky
+  - For the KG scene, ROS bags with synchronized sensor outputs are available alongside the raw data.
+  - Poses are provided only for the KG scene, while for the Riseholme scene only odometry and IMU data is available. To reconstruct a unified point cloud from this data, a SLAM solution has to be used (we tested [FasterLIO](https://github.com/gaoxiang12/faster-lio), which worked reasonably well). However, as argued in the paper, we only used the KG scene for our computations.
+  - For the KG scene, the paper and website list 11 epochs. However, the website also states that there are only 10 epochs. We found that the synchronized ROS bag for May 18th (`kg_may_18.bag`) is corrupted and reindexing it (using `rosbag reindex`) discards most of its data. Additionally, this is the only date for which raw data is not available. Therefore, there are ultimatively 10 usable epochs.
+  - In the downloadable files, `june_22` is missing from the synchronized ROS bag and `kg_september_09.bag` appears to be corrupted. For these dates, we used the raw data for our computations.
+  - A person walking behind the robot causes noise in the final point cloud if not removed.
+  - Mapping the color images to the laser scans often results in the tip of the vines receiving the color of the sky.
 
 
 ## Scripts
 * `create_pointclouds.py` extracts the local point clouds from the synchronized rosbags and uses the given poses to transform them into a global coordinate system. For projection of the color images, we assume that the synchronized rosbags are used.
 * `compute_statistics.py` computes the minimum, median, and maximum of the number of points and average point neighbor distance across all epochs.
 
-The expected folder structure for the data is as follows. We mainly used the synchronized rosbags, even though our code also allows to use the raw data (which we did for `june_22`, as the synchronized rosbag for this date is missing).
+The expected folder structure for the data is as follows. We mainly used the synchronized ROS bags, even though our code also allows to use the raw data (which we did for `june_22`, as the synchronized ROS bag for this date is missing).
 
 ```
 BLT

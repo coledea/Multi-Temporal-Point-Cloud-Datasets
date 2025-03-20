@@ -5,9 +5,9 @@
 [Original Dataset Website](https://www.scanforest.fi/data/) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Evo_TLS)
 
 ## Notes
-  - This dataset is an artificial combination of two individual datasets that cover the same area
-  - The 2019 epochs all cover a slightly larger area than the corresponding 2014 epochs (rectangular in 2014 vs. circular in 2019)
-  - In addition to the two epochs referenced in the paper, additional epochs for a different number of plots are available as separate datasets
+  - This dataset is an artificial combination of two individual datasets that cover the same area.
+  - The 2019 epochs all cover a slightly larger area than the corresponding 2014 epochs (rectangular in 2014 vs. circular in 2019).
+  - In addition to the two epochs referenced in the paper, additional epochs for a different number of plots are available as separate datasets.
 
 
 ## Scripts

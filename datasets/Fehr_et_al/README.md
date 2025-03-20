@@ -5,7 +5,7 @@
 [Original Dataset Website](https://github.com/ethz-asl/change_detection_ds) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Fehr_et_al)
 
 ## Notes
-- The pointclouds in the rosbags contain some points with their color erroneously being black (i.e., it is clear from the scene that these surface points were not black in the real world). We filtered them out for our computations.
+- The pointclouds in the ROS bags contain some points with their color erroneously being black, i.e., it is clear from the scene that these surface points were not black in the real world. We filtered them out for our computations.
 
 ## Scripts
 * `create_pointclouds.py` extracts the globally aligned pointcloud frames from the rosbags and combines them into one unified pointcloud per epoch.

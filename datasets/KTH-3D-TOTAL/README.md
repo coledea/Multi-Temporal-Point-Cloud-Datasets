@@ -6,13 +6,12 @@
 
 ## Notes  
   - The point clouds are available as text files and PCD files.
-  - The full archive download link is not working anymore
-  - A downsampled version and a cropped version is available for each scan. In the latter case, everything except the tabletop has been removed and the scene has been aligned with the coordinate axes
+  - The full archive download link is not working anymore.
+  - A downsampled version and a cropped version is available for each scan. In the latter case, everything except the tabletop has been removed and the scene has been aligned with the coordinate axes.
   - Most scans are well registered, some only coarsely, and some few not at all.
   - Semantic/instance labels are available in the form of XML files for the cropped point clouds. The folder for the labels in JSON format is empty.
   - In contrast to all other file names, the file `Carl_Table_131116_Aft-seg.pcd` contains a hyphen instead of an underscore.
   - We compute the statistics on the cropped scans, as these are the ones that are annotated and actually used by the authors. Change labels could be derived from per-instance position/orientation. 
-
 
 
 ## Scripts

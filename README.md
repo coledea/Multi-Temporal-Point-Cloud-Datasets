@@ -2,7 +2,7 @@
 
 ![](./images/overview.png "Overview of surveyed datasets")
 
-This repository contains code for processing the datasets we surveyed in our paper (currently in review).
+This repository contains code for processing the datasets we surveyed in our paper (currently under review).
 Additionally, for each dataset, possible issues and pecularities are listed in the corresponding README file. For more information on the characteristics of the different datasets, please refer to our paper and the accompanying [website](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/). The website facilitates improved exploration of the available datasets via sorting and filtering functionality.
 
 ## Contents of this Repository

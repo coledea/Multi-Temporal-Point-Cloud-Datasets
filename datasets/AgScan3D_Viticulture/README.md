@@ -5,8 +5,8 @@
 [Original Dataset Website](https://data.csiro.au/collection/csiro:51813) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/AgScan3D_Viticulture)
 
 ## Notes
-  - The data is represented as ray clouds, storing the origin of the laser in addition to the surface point. All points with alpha=0 (rays that did not hit anything) have to be discarded to convert the ray cloud into a point cloud
-  - Only a small subset of the originally acquired dataset is released. Within this subset only some rows were scanned multiple times
+  - The data is represented as ray clouds, storing the origin of the laser in addition to the surface point. To convert the ray cloud into a point cloud, all points with alpha=0 (rays that did not hit anything) have to be discarded.
+  - Only a small subset of the originally acquired dataset is released. Within this subset only some rows were scanned multiple times.
   - For Rymill_b13_r27_to_r33, two PLY files for the same raw data exist. One contains the ray cloud, the other one a derived point cloud with the ray direction stored as normal values.
 
 ## Scripts

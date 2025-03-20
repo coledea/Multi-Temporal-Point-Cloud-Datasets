@@ -5,8 +5,8 @@
 [Original Dataset Website](https://yewzijian.github.io/ChangeDet) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/ChangeDet)
 
 ## Notes
-  - The (predicted) change points are stored redundantly in a separate file and could be used to annotate the original point cloud
-  - The point clouds contains no ground points due to the photogrammetric creation from side-facing cameras
+  - The (predicted) change points are stored redundantly in a separate file and could be used to annotate the original point cloud.
+  - The point clouds contains no ground points due to the photogrammetric creation from side-facing cameras.
 
 
 ## Scripts

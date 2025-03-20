@@ -7,7 +7,7 @@
 ## Notes  
   - This is an extension of the KTH Longterm dataset by semantic labels for Waypoint16. However, the point clouds are smaller, because only the RGB-D images for a single height were used.
   - The labels are available in form of image annotations that would have to be combined with the depth and color images to reconstruct a point cloud. 
-  - For each object, only one label image is available, even if the object appears in multiple images. Also, not all objects are labeled.
+  - For each object, only one label image is available, even if the object appears in multiple images. Additionally, not all objects are labeled.
   - Alternatively, for each segmented object, a single point cloud is available. However, the object is also still present in the full point cloud.
 
 

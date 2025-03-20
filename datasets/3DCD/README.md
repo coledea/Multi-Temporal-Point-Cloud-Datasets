@@ -5,9 +5,9 @@
 [Original Dataset Website](https://sites.google.com/uniroma1.it/3dchangedetection/home-page) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/3DCD)
 
 ## Notes
-  - The paper states that the dataset contains 472 pairs of images, but there are only 471 available for download 
-  - 88 of the DSMs contain erroneous parts (black stripes)
-  - The file train/3D/356-4612_6_6.tif is corrupted and can't be read
+  - The paper states that the dataset contains 472 pairs of images, but only 471 are available for download.
+  - 88 of the DSMs contain erroneous parts (black stripes).
+  - The file `train/3D/356-4612_6_6.tif` is corrupted and can't be read.
 
 ## Scripts
 * `create_pointclouds.py` combines the DSM, RGB, and change images to create a 3D point cloud

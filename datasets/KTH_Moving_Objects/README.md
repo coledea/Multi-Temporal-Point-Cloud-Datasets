@@ -5,10 +5,10 @@
 [Original Dataset Website](https://strands.pdc.kth.se/public/KTH_labelled_moving_objects/readme.html) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/KTH_Moving_Objects)
 
 ## Notes
-  - Extends the KTH Longterm Label with additional data (i.e., from more waypoints). This additional data contains fewer labels (10) but only for objects that were consistently located in different positions in multiple rooms
-  - It seems that the waypoint IDs do not match between this and the other KTH datasets
-  - For WayPoint2 and WayPoint29 only one scan exists
-  - The point cloud contains many (~25% at times) NaN points that have to be filtered out first
+  - This dataset extends the KTH Longterm Label dataset with additional data from more waypoints. This additional data contains fewer labels (10) but only for objects that were consistently located in different positions in multiple rooms.
+  - It seems that the waypoint IDs do not match between this and the other KTH datasets.
+  - For WayPoint2 and WayPoint29, only one scan exists.
+  - The point clouds contain many (~25% at times) NaN points that have to be filtered out first.
   - As only 10 objects are labeled that are consistently located in different places, the labels could be understood as semantic, instance, and change labels at the same time.
 
 ## Scripts

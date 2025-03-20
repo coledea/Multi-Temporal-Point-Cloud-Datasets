@@ -5,7 +5,7 @@
 [Original Dataset Website](https://etsin.fairdata.fi/dataset/3cd9e715-03bb-40da-a082-eb8a356de795) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Kalkkinen)
 
 ## Notes
-  - The point clouds are georeferenced, however, the epochs are not aligned horizontally. Actually, if all plots are rendered together, they are evenly spaced with the later epochs being on a common (higher) plane above the earlier epoch point clouds. Maybe this offset has been explicitly added (e.g., for visualization purposes)
+  - While the point clouds are georeferenced, the epochs are not aligned horizontally. If all plots are rendered together, they are evenly spaced with the later epochs being on a common (higher) plane above the earlier epoch point clouds. Maybe this offset has been explicitly added, e.g., for visualization purposes.
 
 
 ## Scripts

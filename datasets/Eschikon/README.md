@@ -5,7 +5,7 @@
 [Original Dataset Website](https://projects.asl.ethz.ch/datasets/doku.php?id=2018plantstressphenotyping) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Eschikon)
 
 ## Notes
-  - Only every second scan is labeled
+  - Only every second scan is labeled.
   - The paper states that the dataset consists of scans from 31 boxes. However, the available data only contains 30 boxes. 
   - In the Matlab files, the naming convention is not consistent. For the first epoch, the data item is named "Results1". For the subsequent epochs, the data items are named "Results3" (point_cloud_2.mat) to "Results16" (point_cloud_15.mat). For the last epoch (point_cloud_16.mat), the data item is named "point_cloud_16".
   - Similar to the naming issue, the provided data set index ("DataSet") in the Matlab files is wrong. From the second epoch on, the index is one step higher than it should be. The last and the second-to-last epoch both store the same index (16), even though they clearly do not contain the same data.

@@ -5,9 +5,9 @@
 [Original Dataset Website](https://ifpwww.ifp.uni-stuttgart.de/benchmark/hessigheim/default.aspx) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Hessigheim3D)
 
 ## Notes
-  - Provides data both as TXT and LAZ
-  - The first epoch was obtained via aircraft, the subsequent ones via UAV
-  - The first epoch has intensity values, the subsequent ones reflectance
+  - The point clouds are provided as both text files and LAZ files.
+  - The first epoch was obtained via aircraft, the subsequent ones via UAV.
+  - The first epoch has intensity values, the subsequent ones reflectance values.
 
 ## Scripts
 * `compute_statistics.py` computes the minimum, median, and maximum of the number of points and average point neighbor distance across all epochs

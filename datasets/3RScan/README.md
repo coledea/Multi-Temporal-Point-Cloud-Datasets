@@ -6,9 +6,9 @@
 
 ## Notes
   - Some scans have no rescans, alignment data, or labels. Others are very small due to upload or processing issues during acquisition.
-  - The scans were labeled using crowdsourcing, which led to some annotations being erroneous or inconsistent (e.g., a backpack being an individual object in one scan and considered as part of the bed it lies next to in another one)
+  - The scans were labeled using crowdsourcing, which led to some annotations being erroneous or inconsistent (e.g., a backpack being an individual object in one scan and considered as part of the bed it lies next to in another one).
   - The semantic annotations are only available for the training and validation split and only in the form of mesh annotations. If an annotated point clouds should be constructed, either the mesh has to be sampled, or for each RGBD frame, the mesh's instance labels have to be rendered from the given camera pose and subsequently combined with the result of backprojecting the RGBD frame.
-  - The scenes are not oriented consistently - sometimes the y-axis points upwards, in other cases the z-axis
+  - The scenes are not oriented consistently - sometimes the y-axis points upwards, in other cases the z-axis.
 
 
 ## Scripts

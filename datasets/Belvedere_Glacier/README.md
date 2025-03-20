@@ -5,8 +5,8 @@
 [Original Dataset Website](https://zenodo.org/records/10817029) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Belvedere_Glacier)
 
 ## Notes
-  - The two oldest epochs have only greyscale values instead of RGB colors
-  - The epochs from 2015 on cover a smaller area compared to the previous epochs (probably as these were acquired using a UAV compared to an aircraft) 
+  - The two oldest epochs have only greyscale values instead of RGB colors.
+  - The epochs from 2015 onwards cover a smaller area than the previous epochs (probably as these were acquired using a UAV compared to an aircraft).
 
 
 ## Scripts

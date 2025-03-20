@@ -5,11 +5,11 @@
 [Original Dataset Website](https://strands.pdc.kth.se/public/KTH_longterm_dataset_registered/readme.html) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/KTH_Longterm)
 
 ## Notes  
-  - The paper speaks of (semantic) labels for one of the rooms, but they are not present in the downloadable dataset
-  - The website and paper speak of 8 waypoints while there are actually 9
-  - In 20140827/patrol_run_14, there is a scan named WayPoint21. However, this waypoint does not exist. It seems to be WayPoint22 actually.
-  - There is a WayPoint23 with only one scan, which actually corresponds to WayPoint12, but is not registered to the other scans of this waypoint
-  - For WayPoint1, 50 of 79 scans are not registered correctly to the other 29 of which one is the very first scan. Therefore, the 50 other scans fail the overlap test. Among themselves, however, the two groups are coarsely registered.
+  - The paper speaks of semantic labels for one of the rooms, but they are not present in the downloadable dataset.
+  - The website and paper speak of 8 waypoints while there are actually 9.
+  - In 20140827/patrol_run_14, there is a scan named WayPoint21. However, this waypoint does not exist and actually appears to be WayPoint22.
+  - There is a WayPoint23 with only one scan that actually corresponds to WayPoint12, but is not registered to the other scans of this waypoint.
+  - For WayPoint1, 50 of 79 scans are not registered correctly to the other 29 of which one is the very first scan. Therefore, the 50 other scans fail our overlap test. Among themselves, however, the two groups are coarsely registered.
 
 
 

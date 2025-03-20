@@ -6,8 +6,8 @@
 
 ## Notes
   - All point clouds are stored in one binary CloudCompare file (together with the M3C2 results).
-  - While the point cloud contains an intensity attribute, it seems to be just the color value converted to greyscale. As the point clouds are the result of photogrammetric reconstruction, it can't be a real intensity value
-  - For each epoch, there is a point cloud reconstructed from terrestrial photos and one from aerial photos available
+  - While the point clouds contain an intensity attribute, it seems to be just the color value converted to greyscale. As the point clouds are the result of photogrammetric reconstruction, it can't be an actual intensity value as obtained during laser scanning.
+  - For each epoch, one point cloud reconstructed from terrestrial photos and one from aerial photos is available.
 
 ## Scripts
 * `compute_statistics.py` computes the minimum, median, and maximum of the number of points and average point neighbor distance across all epochs

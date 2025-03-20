@@ -5,7 +5,7 @@
 [Original Dataset Website](https://doi.org/10.11588/data/TGSVUI) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/AHK_2)
 
 ## Notes
-  - The area is split into 10 non-overlapping tiles
+  - The area is split into 10 non-overlapping tiles.
 
 ## Scripts
 * `compute_statistics.py` computes the minimum, median, and maximum of the number of points and average point neighbor distance across all epochs

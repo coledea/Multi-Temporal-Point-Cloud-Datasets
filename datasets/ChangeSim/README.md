@@ -6,7 +6,7 @@
 
 ## Notes
   - RGBD data and poses are available for all runs. However, for the Ref_test sequences, the trajectory.txt files contain more or less entries than there are images available. It is unclear, how the poses are to be synced with the image data, as no timestamps are provided.
-  - The depth images seem to contain banding artifacts (probably from quantization; the images have only one 8 bit channel) that make an accurate reconstruction difficult.
+  - The depth images contain banding artifacts (probably from quantization - the images have only one 8 bit channel) that make an accurate reconstruction difficult.
   - Even though reconstruction from the depth images seems to be difficult, for the query epochs, point cloud reconstructions are available. For the reference epochs, point clouds can be exported from the RTAB-Map database (using the [RTAB-Map](http://introlab.github.io/rtabmap/) database viewer). For this, we used a 20m depth limit and removed duplicate points. 
   - The dataset can be considered to have 4 epochs per scene - the first and second between which actual changes happen, and the two additional runs for dark and dust, for which only appearance changes happened.
   - While the sequence number generally corresponds to the trajectory followed, Query_Seq_0_dark seems to follow another path than the other runs in Seq_0.
