@@ -1,6 +1,6 @@
 import os
 import argparse
-from utils.evaluation import Statistics, compute_dataset_statistics
+from utils.evaluation import Statistics, EvaluationConfig, compute_dataset_statistics
 
 
 parser = argparse.ArgumentParser(prog='AHK 1 - Dataset Statistics Computation')
@@ -15,12 +15,13 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 	epochs = [[os.path.join(input_folder, '20150701_TLS_Hochebenkar_UTM32N.txt')], 
 		   [os.path.join(input_folder, '20170719_TLS_Hochebenkar_UTM32N.txt')]]
 	
-	compute_dataset_statistics([epochs], 
-							[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE], 
-							output_log_path, 
-							leave_progress_bar,
-							position_offset=[-652833, -5189072, 0],
-							txt_has_header=True)
+	config = EvaluationConfig(statistics_to_compute=[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE],
+						   output_log_path=output_log_path,
+						   leave_progress_bar=leave_progress_bar,
+						   position_offset=[-652833, -5189072, 0],
+						   txt_has_header=True)
+	
+	compute_dataset_statistics([epochs], config)
 
 
 if __name__ == '__main__':

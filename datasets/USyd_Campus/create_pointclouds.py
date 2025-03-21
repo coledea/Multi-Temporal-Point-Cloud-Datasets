@@ -7,7 +7,6 @@ from tqdm import tqdm
 from scipy.spatial.transform import Rotation as R
 from rosbags.rosbag1 import Reader
 from rosbags.typesys import Stores, get_typestore, get_types_from_msg
-import matplotlib.pyplot as plt
 
 
 from utils.pointcloud_format import FORMAT_XYZI, FORMAT_XYZRGB
@@ -79,15 +78,15 @@ def matrix_from_transform_message(transform):
 	return matrix
 
 
-# TODO: A3, B0, B1
 link_to_cam = {
 	'gmsl_centre_link' : 'A0',
 	'gmsl_left_link' : 'A1',
 	'gmsl_right_link' : 'A2',
-	'TODO' : 'A3',
-	'TODO' : 'B0',
-	'TODO' : 'B1'
+	'gmsl_back_link' : 'A3',
+	'gmsl_left_side_link' : 'B0',
+	'gmsl_right_side_link' : 'B1'
 }
+
 
 # we read the transforms from the bag, as they sometimes change between the bags
 def read_camera_data(input_folder, bag_path):

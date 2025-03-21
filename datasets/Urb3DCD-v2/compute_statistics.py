@@ -41,8 +41,9 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 			change_ratio = num_changes / len(pointcloud)
 			statistics[Statistics.CHANGE_POINTS].append(change_ratio)
 
-	statistics = [np.array(entry) for entry in statistics.values()]
-	print_dataset_statistics(statistics, [Statistics.NUM_POINTS, Statistics.AVG_DISTANCE, Statistics.CHANGE_POINTS], output_log_path)
+	for key in statistics:
+		statistics[key] = np.array(statistics[key])
+	print_dataset_statistics(statistics, output_log_path)
 
 
 if __name__ == '__main__':

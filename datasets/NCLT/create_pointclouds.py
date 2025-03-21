@@ -165,7 +165,7 @@ def extract_pointcloud_with_intensity(input_path, output_path, output_format, ti
 		progress_bar.update()
 	tile_writer.close()
 
-# requires the velodyne_sync and lb3 folders, as well as the camera parameter
+# requires the velodyne_sync and lb3 folders, as well as the camera parameters
 def extract_pointcloud_with_colors(input_path, output_path, output_format, tile_size):
 	velodyne_path = os.path.join(input_path, 'velodyne_sync')
 	pose_path = os.path.join(input_path, 'groundtruth_' + os.path.basename(input_path) + '.csv')

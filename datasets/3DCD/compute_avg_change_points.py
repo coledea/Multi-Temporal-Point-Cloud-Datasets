@@ -3,7 +3,7 @@ import argparse
 import cv2
 import numpy as np
 from tqdm import tqdm
-from utils.evaluation import write_to_log
+from utils.evaluation import Statistics, print_dataset_statistics
 
 
 parser = argparse.ArgumentParser(prog='3DCD - Dataset Avg. Change Points Computation')
@@ -36,10 +36,7 @@ def compute_avg_change_points(input_folder, output_log_path, leave_progress_bar=
 
 	change_percentage = np.array(change_percentage)
 	change_percentage = change_percentage[change_percentage >= 0]
-	message = 'Average share of labeled change points per epoch: ' + str(np.average(change_percentage))
-	print(message)
-	if output_log_path:
-		write_to_log(output_log_path, message)
+	print_dataset_statistics({Statistics.CHANGE_POINTS : change_percentage}, output_log_path)
 
 
 if __name__ == '__main__':

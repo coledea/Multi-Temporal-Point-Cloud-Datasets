@@ -3,7 +3,7 @@ import argparse
 import cv2
 import numpy as np
 from tqdm import tqdm
-from utils.evaluation import write_to_log
+from utils.evaluation import Statistics, print_dataset_statistics
 
 
 parser = argparse.ArgumentParser(prog='ChangeSim - Dataset Avg. Change Points Computation')
@@ -28,17 +28,13 @@ def compute_avg_change_points(input_folder, output_log_path, leave_progress_bar=
 			continue
 		for scene in os.scandir(split.path):
 			for run in os.scandir(scene.path):
-				processing_order.append(os.path.join(run.path, 'segmentation'))
+				processing_order.append(os.path.join(run.path, 'change_segmentation'))
 
 	change_percentage = []
 	for entry in tqdm(processing_order, leave=leave_progress_bar):
 		change_percentage.append(compute_change_percentage(entry))
 
-	change_percentage = np.array(change_percentage)
-	message = 'Average share of labeled change points per epoch: ' + str(np.average(change_percentage))
-	tqdm.write(message)
-	if output_log_path:
-		write_to_log(output_log_path, message)
+	print_dataset_statistics({Statistics.CHANGE_POINTS : np.array(change_percentage)}, output_log_path)
 
 
 if __name__ == '__main__':

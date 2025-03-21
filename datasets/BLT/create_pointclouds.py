@@ -171,7 +171,7 @@ def extract_pointclouds(input_path, output_path, output_format, exclusion_list, 
 			output_folder = os.path.join(input_path, 'pointclouds', entry.stem)
 		else:
 			output_folder = os.path.join(output_path, entry.stem)
-		os.makedirs(output_path, exist_ok=True)
+		os.makedirs(output_folder, exist_ok=True)
 
 		if project_images:
 			extract_pointcloud_with_colors(entry.resolve(), output_folder, output_format, np.array(num_tiles))

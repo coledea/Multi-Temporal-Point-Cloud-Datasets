@@ -1,7 +1,7 @@
 import os
 import argparse
 import numpy as np
-from utils.evaluation import Statistics, compute_dataset_statistics
+from utils.evaluation import Statistics, EvaluationConfig, compute_dataset_statistics
 from utils.pointcloud_processing import rotation_for_alignment_with_z
 
 
@@ -25,12 +25,12 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 	# the scans are not axis-aligned. We have to rotate them before computing the ground-plane convex hull
 	# the ground plane normal was empirically determined
 	rotation = rotation_for_alignment_with_z(np.array([-0.028786, -1.026719, -0.448721]))
+	config = EvaluationConfig(statistics_to_compute=[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE, Statistics.PARTIAL_EPOCHS],
+						   output_log_path=output_log_path,
+						   leave_progress_bar=leave_progress_bar,
+						   rotation_before_projection=rotation)
 	
-	compute_dataset_statistics([epochs], 
-							[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE, Statistics.PARTIAL_EPOCHS], 
-							output_log_path, 
-							leave_progress_bar,
-							rotation_before_projection=rotation)
+	compute_dataset_statistics([epochs], config)
 
 
 if __name__ == '__main__':

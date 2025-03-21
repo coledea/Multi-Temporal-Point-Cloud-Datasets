@@ -6,7 +6,7 @@ from tqdm import tqdm
 from scipy.spatial.transform import Rotation as R
 
 from utils.pointcloud_format import FORMAT_XYZRGB
-from utils.io import FileFormat, read_pointcloud_xyz
+from utils.io import FileFormat, read_pointcloud_for_evaluation
 from utils.tile_writer import TileWriter
 from utils.pointcloud_processing import remove_duplicates
 from utils.pointcloud_creation import project_points_to_image, get_pose_matrix_from_pose, get_processing_order
@@ -57,7 +57,7 @@ def extract_pointcloud(input_path, output_folder, output_format, num_tiles):
 		im_right = cv2.cvtColor(im_right, cv2.COLOR_BGR2RGB)
 
 		pose_matrix = get_pose_matrix_from_pose(poses[idx][1:])
-		position = read_pointcloud_xyz(file.path)
+		position = read_pointcloud_for_evaluation(file.path)
 		position = np.hstack((position, np.ones((position.shape[0], 1))))
 		aligned_position = np.dot(position, pose_matrix.T)[:, :3]
 
@@ -67,12 +67,12 @@ def extract_pointcloud(input_path, output_folder, output_format, num_tiles):
 		points_left, mask_left = project_points_to_image(position, 
 												   T_lidar_to_leftcam, 
 												   projection_leftcam, 
-												   [0, 0, im_width=im_left.shape[1], im_height=im_left.shape[0]])
+												   [0, 0, im_left.shape[1], im_left.shape[0]])
 		
 		points_right, mask_right = project_points_to_image(position, 
 										   T_lidar_to_rightcam, 
 										   projection_rightcam,
-										   [0, 0, im_width=im_right.shape[1], im_height=im_right.shape[0]])
+										   [0, 0, im_right.shape[1], im_right.shape[0]])
 		
 		colors = np.zeros((aligned_position.shape[0], 3))
 		colors[np.where(mask_left)] = im_left[np.round(points_left[:,1]).astype(int), np.round(points_left[:,0]).astype(int)]

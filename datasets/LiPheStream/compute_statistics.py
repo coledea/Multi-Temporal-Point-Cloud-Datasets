@@ -3,7 +3,7 @@ import argparse
 import tempfile
 import shutil
 from zipfile import ZipFile
-from utils.evaluation import Statistics, compute_dataset_statistics
+from utils.evaluation import Statistics, EvaluationConfig, compute_dataset_statistics
 
 
 parser = argparse.ArgumentParser(prog='LiPheStream - Dataset Statistics Computation')
@@ -56,11 +56,12 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 					for scan in sorted(os.scandir(target_folder), key=lambda e: e.name):
 						scenes[scene_name].append([scan.path])
 
-	compute_dataset_statistics(list(scenes.values()), 
-							[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE, Statistics.PARTIAL_EPOCHS], 
-							output_log_path, 
-							leave_progress_bar,
-							remove_duplicates=True)
+	config = EvaluationConfig(statistics_to_compute=[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE, Statistics.PARTIAL_EPOCHS],
+						   output_log_path=output_log_path,
+						   leave_progress_bar=leave_progress_bar,
+						   remove_duplicates=True)
+	
+	compute_dataset_statistics(list(scenes.values()),config)
 
 
 if __name__ == '__main__':

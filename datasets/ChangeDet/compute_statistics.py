@@ -1,6 +1,6 @@
 import os
 import argparse
-from utils.evaluation import Statistics, compute_dataset_statistics
+from utils.evaluation import Statistics, EvaluationConfig, compute_dataset_statistics
 
 
 parser = argparse.ArgumentParser(prog='ChangeDet - Dataset Statistics Computation')
@@ -21,10 +21,11 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 		for epoch in ['_t0_warped', '_t1']:
 			processing_order[-1].append([os.path.join(scene.path, scene.name + epoch + '.pcd')])
 
-	compute_dataset_statistics(processing_order, 
-							[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE], 
-							output_log_path, 
-							leave_progress_bar)
+	config = EvaluationConfig(statistics_to_compute=[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE],
+						   output_log_path=output_log_path,
+						   leave_progress_bar=leave_progress_bar)
+
+	compute_dataset_statistics(processing_order, config)
 
 
 if __name__ == '__main__':

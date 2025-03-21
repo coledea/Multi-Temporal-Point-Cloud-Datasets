@@ -17,7 +17,7 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 	
 	statistics = {Statistics.NUM_POINTS : [], Statistics.AVG_DISTANCE : [], Statistics.CHANGE_POINTS : []}
 	
-	# we don't use utils.evaluation.compute_dataset_statistics, as we required custom loading for the change label
+	# we don't use utils.evaluation.compute_dataset_statistics, as we require custom loading for the change label
 	change_points_epoch_1 = 0
 	for run in tqdm(sorted(os.scandir(input_folder), key=lambda e: e.name), total=2, leave=leave_progress_bar):
 		pointcloud = laspy.read(run.path)
@@ -32,9 +32,9 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 			change_points = change_points_epoch_1 + np.count_nonzero(pointcloud[:,3] == 1) + np.count_nonzero(pointcloud[:,3] == 2)
 			statistics[Statistics.CHANGE_POINTS].append(change_points / (len(pointcloud) + change_points_epoch_1))
 	
-	print_dataset_statistics([np.array(entry) for entry in statistics.values()], 
-						  statistics.keys(), 
-						  output_log_path)
+	for key in statistics:
+		statistics[key] = np.array(statistics[key])
+	print_dataset_statistics(statistics, output_log_path)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 import os
 import argparse
-from utils.evaluation import Statistics, compute_dataset_statistics
+from utils.evaluation import Statistics, EvaluationConfig, compute_dataset_statistics
 
 
 parser = argparse.ArgumentParser(prog='Eschikon - Dataset Statistics Computation')
@@ -20,10 +20,11 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 		for epoch in os.scandir(box.path):
 			processing_order[-1].append([epoch.path])
 
-	compute_dataset_statistics(processing_order, 
-							[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE], 
-							output_log_path, 
-							leave_progress_bar)
+	config = EvaluationConfig(statistics_to_compute=[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE],
+						   output_log_path=output_log_path,
+						   leave_progress_bar=leave_progress_bar)
+
+	compute_dataset_statistics(processing_order, config)
 
 
 if __name__ == '__main__':

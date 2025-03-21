@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import tifffile
 
+# Resizes the the input_image to the size of the target_image
 def match_image_size(input_image, target_image):
 	if input_image.shape[0:2] != target_image.shape[0:2]:
 		input_image = cv2.resize(input_image, (target_image.shape[1], target_image.shape[0]))
@@ -19,7 +20,7 @@ def read_image(filepath):
 	else:
 		return cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
 
-
+# Combines DSM, color, and label images to obtain a point cloud
 def dsm_to_pointcloud(dsm_path, color_path=None, annotation_path=None, annotation_binary_threshold=None, only_positive_dsm_values=False):
 	dsm = read_image(dsm_path)
 	
@@ -51,7 +52,7 @@ def dsm_to_pointcloud(dsm_path, color_path=None, annotation_path=None, annotatio
 	pointcloud = np.stack(columns, axis=-1)
 	return pointcloud
 
-
+# Incrementally reconstructs a point cloud by backprojecting depth/color/label images
 class RGBDReconstruction:
 	# intrinsics is an array of the form: np.array([[fx, 0, Cu], [0, fy, Cv], [0, 0, 1]])
 	def __init__(self, intrinsics, image_resolution, map_color_to_segmentation_id=False, depth_threshold=math.inf):
@@ -61,7 +62,6 @@ class RGBDReconstruction:
 		self.map_color_to_segmentation_id = map_color_to_segmentation_id
 		self.color_to_segmentation_map = {}
 		self.result = []
-		pass
 
 	# Maps the pixel colors of a segmentation image to a running index of segmentation IDs
 	def __color_to_segID__(self, color):
@@ -109,6 +109,7 @@ class RGBDReconstruction:
 	def get_result(self):
 		return np.array(self.result)
 	
+# Interpolates between two poses using the given timestamp
 def get_pose_matrix_interpolated(pose1, pose2, t1, t2, timestamp):
 	alpha = (timestamp - t1) / (t2 - t1)
 	position = (1 - alpha) * pose1[:3] + alpha * pose2[:3]
@@ -119,13 +120,14 @@ def get_pose_matrix_interpolated(pose1, pose2, t1, t2, timestamp):
 	pose_matrix[:3, 3] = position
 	return pose_matrix
 
+# Converts a pose of the form [x, y, z, qx, qy, qz, qw] into a pose matrix
 def get_pose_matrix_from_pose(pose):
 	pose_matrix = np.eye(4)
 	pose_matrix[:3, :3] = R.from_quat(pose[3:]).as_matrix()
 	pose_matrix[:3, 3] = pose[:3]
 	return pose_matrix
 
-# retrieves the best pose for the given target_timestamp
+# Retrieves the best pose from a list of poses for the given target_timestamp
 def get_pose_matrix(timestamps, poses, target_timestamp, interpolate=True):
 	idx = np.searchsorted(timestamps, target_timestamp)
 	# At the borders just take the nearest pose
@@ -137,7 +139,10 @@ def get_pose_matrix(timestamps, poses, target_timestamp, interpolate=True):
 		pose1, pose2 = poses[idx - 1], poses[idx]
 		return get_pose_matrix_interpolated(pose1, pose2, t1, t2, target_timestamp)
 
-# roi = [x, y, w, h]
+
+# Projects the points using the transformation matrix T and the projection matrix proj
+# roi = [x, y, w, h] denotes the region of interest. Points outside this are discarded.
+# The function returns the projected points, as well as a mask denoting which points are within the ROI.
 def project_points_to_image(points, T, proj, roi):
 	points_cam = T @ points.T
 	points_im = proj @ points_cam
@@ -150,7 +155,7 @@ def project_points_to_image(points, T, proj, roi):
 	return points_im[np.where(mask)], mask
 
 
-# gets Path objects for all folders/files to process in a folder, given possible inclusion/exclusion lists
+# Gets Path objects for all entries in a folder, considering possible inclusion/exclusion lists
 def get_processing_order(input_path, inclusion_list, exclusion_list):
 	processing_order = []
 	if inclusion_list is not None:

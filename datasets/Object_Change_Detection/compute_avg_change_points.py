@@ -3,8 +3,8 @@ import argparse
 import numpy as np
 from pathlib import Path
 from tqdm import tqdm
-from utils.evaluation import write_to_log
-from utils.io import read_pointcloud_xyz
+from utils.evaluation import Statistics, print_dataset_statistics
+from utils.io import read_pointcloud_for_evaluation
 
 parser = argparse.ArgumentParser(prog='Object Change Detection - Dataset Avg. Change Points Computation')
 parser.add_argument('input_path', help='The root folder of the dataset')
@@ -25,7 +25,7 @@ def compute_avg_change_points(input_folder, output_log_path, leave_progress_bar=
 	
 	change_percentage = []
 	for scan in tqdm(processing_order, leave=leave_progress_bar):
-		pointcloud = read_pointcloud_xyz(str(scan.resolve()))
+		pointcloud = read_pointcloud_for_evaluation(str(scan.resolve()))
 
 		# count change points in annotation file
 		scan_idx = scan.stem[-1]
@@ -37,11 +37,7 @@ def compute_avg_change_points(input_folder, output_log_path, leave_progress_bar=
 
 		change_percentage.append(num_changes / len(pointcloud))
 
-	change_percentage = np.array(change_percentage)
-	message = 'Average share of labeled change points per epoch: ' + str(np.average(change_percentage))
-	tqdm.write(message)
-	if output_log_path:
-		write_to_log(output_log_path, message)
+	print_dataset_statistics({Statistics.CHANGE_POINTS : np.array(change_percentage)}, output_log_path)
 
 
 if __name__ == '__main__':

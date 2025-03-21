@@ -11,7 +11,7 @@
   - The semantic labels are predicted from the RGB frame and are, therefore, not perfect.
   - The "Calibration" folder, which should contain the camera intrinsics, is empty. However, in `utils/calibration.py` of the accompanying source code, the intrinsics appear to be hardcoded.
   - The depth images are quite noisy for farther away surfaces. When thresholding the depth values, the point cloud reconstructions are of significant better quality.
-  - For the segmentation images of Scenario_1-1, the file names have six digits instead of four (as is the case for all other epochs)
+  - For the segmentation images of Scenario_1-1, the file names have six digits instead of four (as is the case for all other epochs).
 
 
 

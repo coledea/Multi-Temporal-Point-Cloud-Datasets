@@ -4,8 +4,8 @@ import json
 import laspy
 import numpy as np
 from tqdm import tqdm
-from utils.evaluation import write_to_log
-from utils.io import read_las_with_changes
+from utils.evaluation import Statistics, print_dataset_statistics
+from utils.io import read_las_in_local_crs
 
 parser = argparse.ArgumentParser(prog='3RScan - Dataset Avg. Change Points Computation')
 parser.add_argument('input_path', help='The folder with the sampled point clouds')
@@ -38,7 +38,7 @@ def compute_avg_change_points(input_folder, json_path, output_log_path, leave_pr
 				first_epoch_instances = pointcloud.instance
 			else:
 				change_points = 0
-				pointcloud = read_las_with_changes(epoch.path)
+				pointcloud = read_las_in_local_crs(epoch.path)
 
 				# removed objects are extracted from the first epoch and counted towards the change points
 				for removed_object in removals[scene.name][idx-1]:
@@ -48,11 +48,7 @@ def compute_avg_change_points(input_folder, json_path, output_log_path, leave_pr
 				change_points += np.count_nonzero(pointcloud[:, 3] > 0)
 				change_percentage.append(change_points / overall_points)
 
-	change_percentage = np.array(change_percentage)
-	message = 'Average share of labeled change points per epoch: ' + str(np.average(change_percentage))
-	tqdm.write(message)
-	if output_log_path:
-		write_to_log(output_log_path, message)
+	print_dataset_statistics({Statistics.CHANGE_POINTS : np.array(change_percentage)}, output_log_path)
 
 
 if __name__ == '__main__':

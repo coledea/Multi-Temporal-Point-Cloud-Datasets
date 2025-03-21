@@ -1,6 +1,6 @@
 import os
 import argparse
-from utils.evaluation import Statistics, compute_dataset_statistics
+from utils.evaluation import Statistics, EvaluationConfig, compute_dataset_statistics
 
 
 parser = argparse.ArgumentParser(prog='Rotmoos - Dataset Statistics Computation')
@@ -20,12 +20,13 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 			os.path.join(input_folder, '2022_rotmoos_ULS', '2022_Rotmoostal_flight2_colorized_ULS.laz')]
 	
 	processing_order = [[[epoch]] for epoch in epochs if os.path.exists(epoch)]
-	compute_dataset_statistics(processing_order, 
-							[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE], 
-							output_log_path, 
-							leave_progress_bar,
-							position_offset=[-654251, -5189692, -2313],
-							txt_has_header=True)
+	config = EvaluationConfig(statistics_to_compute=[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE],
+						   output_log_path=output_log_path,
+						   leave_progress_bar=leave_progress_bar,
+						   position_offset=[-654251, -5189692, -2313],
+						   txt_has_header=True)
+	
+	compute_dataset_statistics(processing_order, config)
 
 
 if __name__ == '__main__':

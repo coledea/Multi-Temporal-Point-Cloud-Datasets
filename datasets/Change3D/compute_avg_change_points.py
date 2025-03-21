@@ -6,7 +6,7 @@ import csv
 import numpy as np
 import open3d as o3d
 from tqdm import tqdm
-from utils.evaluation import write_to_log
+from utils.evaluation import Statistics, print_dataset_statistics
 
 
 parser = argparse.ArgumentParser(prog='Change3D - Dataset Avg. Change Points Computation')
@@ -114,11 +114,7 @@ def compute_avg_change_points(input_folder, output_log_path, leave_progress_bar=
 		label_file_path = os.path.join(input_folder, 'labels', 'labeled_point_lists', '2016-2020', label_file_name)
 		change_percentage.append(compute_change_percentage(entry[0], entry[1], label_file_path))
 	   
-	change_percentage = np.array(change_percentage)
-	message = 'Average share of labeled change points per epoch: ' + str(np.average(change_percentage))
-	tqdm.write(message)
-	if output_log_path:
-		write_to_log(output_log_path, message)
+	print_dataset_statistics({Statistics.CHANGE_POINTS : np.array(change_percentage)}, output_log_path)
 
 if __name__ == '__main__':
 	args = parser.parse_args()

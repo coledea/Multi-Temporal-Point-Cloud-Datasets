@@ -1,10 +1,12 @@
+from dataclasses import dataclass, field
 from scipy.spatial import cKDTree
+from scipy.spatial.transform import Rotation
 import numpy as np
 from shapely.geometry import MultiPoint
 from shapely import union_all
 from .pointcloud_processing import reduce_and_remove_outliers
 from tqdm import tqdm
-from .io import read_pointcloud_xyz, read_las_with_changes, read_las_in_local_crs
+from .io import read_pointcloud_for_evaluation, read_and_merge_pointclouds_for_evaluation
 from enum import Enum
 import os
 
@@ -13,6 +15,22 @@ class Statistics(Enum):
     AVG_DISTANCE = 'Average neighbor distance'
     PARTIAL_EPOCHS = 'Partial epochs'
     CHANGE_POINTS = 'Change ratio'
+
+
+# The position_offset can be used to shift a point cloud in order to avoid precision errors due to high coordinate values.
+# The rotation_before_projection (a scipy.spatial.transform.Rotation object) can be used if the point clouds are not axis-aligned, i.e., if they have to be rotated before the convex hull in the xy-plane can be computed
+@dataclass
+class EvaluationConfig:
+    statistics_to_compute: list = None
+    output_log_path: str = None
+    tiled_epochs: bool = False
+    leave_progress_bar: bool = False
+    position_offset: list = field(default_factory=lambda:[0, 0, 0])
+    txt_has_header: bool = False
+    txt_delimiter: str = None
+    remove_duplicates: bool = False
+    rotation_before_projection: Rotation = None
+
 
 
 def avg_neighbor_distance(pointcloud):
@@ -58,34 +76,65 @@ def statistics_change_points_string(change_data):
     string += '============================\n'
     return string
 
-def print_dataset_statistics(statistics_data, statistics_specifiers, file_path=None):
+def print_dataset_statistics(statistics, file_path=None):
     statistics_string = ''
-    for idx, statistic in enumerate(statistics_specifiers):
-        if len(statistics_data[idx]) == 0:
+    for key in statistics:
+        if len(statistics[key]) == 0:
             continue
-        if statistic == Statistics.NUM_POINTS:
-            statistics_string += statistics_num_points_string(statistics_data[idx])
-        elif statistic == Statistics.AVG_DISTANCE:
-            statistics_string += statistics_avg_distance_string(statistics_data[idx])
-        elif statistic == Statistics.PARTIAL_EPOCHS:
-            statistics_string += statistics_partial_epochs_string(statistics_data[idx], threshold=0.75)
-        elif statistic == Statistics.CHANGE_POINTS:
-            statistics_string += statistics_change_points_string(statistics_data[idx])
+        if key == Statistics.NUM_POINTS:
+            statistics_string += statistics_num_points_string(statistics[key])
+        elif key == Statistics.AVG_DISTANCE:
+            statistics_string += statistics_avg_distance_string(statistics[key])
+        elif key == Statistics.PARTIAL_EPOCHS:
+            statistics_string += statistics_partial_epochs_string(statistics[key], threshold=0.75)
+        elif key == Statistics.CHANGE_POINTS:
+            statistics_string += statistics_change_points_string(statistics[key])
     print(statistics_string)
 
     if file_path:
         write_to_log(file_path, statistics_string)
 
-# Computes the statistics per tile and merges the results for the whole pointcloud
-# we assume LAS/LAZ files for tiled point clouds
-def compute_epoch_statistics_tiled(tiles, statistics_to_compute, remove_duplicates=False, first_epoch_polygon=None):
-    statistics = {}
+# Utility class for approximating the overlap of point clouds with a reference point cloud
+class OverlapApproximator:
+    def __init__(self, rotation_before_projection=None, down_sample_factor=0.1, outlier_removal_neighbors=20, outlier_removal_std_ratio=1.0):
+        self.reference_epoch_polygon = None
+        self.polygons = []
+        self.down_sample_factor = down_sample_factor
+        self.outlier_removal_neighbors = outlier_removal_neighbors
+        self.outlier_removal_std_ratio = outlier_removal_std_ratio
+        self.rotation_before_projection = rotation_before_projection
+    
+    # add tile to the current epoch
+    def add_tile(self, pointcloud):
+        pointcloud_reduced = reduce_and_remove_outliers(pointcloud, self.down_sample_factor, self.outlier_removal_neighbors, self.outlier_removal_std_ratio)
+        if self.rotation_before_projection is not None:
+            self.rotation_before_projection.apply(pointcloud_reduced)
+        self.polygons.append(MultiPoint(pointcloud_reduced[:,0:2]).convex_hull)
+        
+    # compute overlap of the current epoch to the reference epoch and reset
+    def compute_overlap(self):
+        if self.reference_epoch_polygon is None:
+            self.reference_epoch_polygon = union_all([self.polygons])
+            self.polygons = []
+            return None
+        else:
+            intersection_area = self.reference_epoch_polygon.intersection(union_all([self.polygons])).area
+            self.polygons = []
+            return intersection_area / self.reference_epoch_polygon.area
+
+# Computes the specified statistics for the given epoch and appends them to the statistics dictionary
+def compute_statistics_for_epoch(tiles, statistics, config, overlap_approximator, merge_tiles=False):
     overall_num_points = 0
     points_per_tile = []
     distance_per_tile = []
-    polygons = []
+    change_ratios = []
+
+    # compute values per tile
     for tile in tqdm(tiles, leave=False):
-        pointcloud = read_pointcloud_xyz(tile, remove_duplicates=remove_duplicates)
+        if merge_tiles:
+            pointcloud = read_and_merge_pointclouds_for_evaluation(tiles, txt_has_header=config.txt_has_header, txt_delimiter=config.txt_delimiter, position_offset=config.position_offset, remove_duplicates=config.remove_duplicates)
+        else:
+            pointcloud = read_pointcloud_for_evaluation(tile, txt_has_header=config.txt_has_header, txt_delimiter=config.txt_delimiter, position_offset=config.position_offset, remove_duplicates=config.remove_duplicates)
 
         num_points = len(pointcloud)
         if num_points < 2:
@@ -94,126 +143,59 @@ def compute_epoch_statistics_tiled(tiles, statistics_to_compute, remove_duplicat
         overall_num_points += num_points
         points_per_tile.append(num_points)
 
-        if Statistics.AVG_DISTANCE in statistics_to_compute:
+        if Statistics.AVG_DISTANCE in statistics:
             avg_distance = avg_neighbor_distance(pointcloud)
             distance_per_tile.append(avg_distance)
 
-        if Statistics.PARTIAL_EPOCHS in statistics_to_compute:
-            pointcloud_reduced = reduce_and_remove_outliers(pointcloud, down_sample_factor=0.1, outlier_removal_neighbors=20, outlier_removal_std_ratio=1.0)
-            polygons.append(MultiPoint(pointcloud_reduced[:,0:2]).convex_hull)
+        if Statistics.PARTIAL_EPOCHS in statistics:
+            overlap_approximator.add_tile(pointcloud[:, 0:3])
+        
+        if Statistics.CHANGE_POINTS in statistics and pointcloud.shape[1] > 3:
+            change_ratio = np.count_nonzero(pointcloud[:,3]) / len(pointcloud)
+            change_ratios.append(change_ratio)
 
-    if Statistics.AVG_DISTANCE in statistics_to_compute:
-        overall_avg_distance = 0
-        for tile_idx in range(len(distance_per_tile)):
-            overall_avg_distance += distance_per_tile[tile_idx] * (points_per_tile[tile_idx] / overall_num_points)
-        statistics[Statistics.AVG_DISTANCE] = overall_avg_distance
+        if merge_tiles:
+            break
 
-    if Statistics.NUM_POINTS in statistics_to_compute:
-        statistics[Statistics.NUM_POINTS] = overall_num_points
-
-    if Statistics.PARTIAL_EPOCHS in statistics_to_compute:
-        if first_epoch_polygon is None:
-            first_epoch_polygon = union_all([polygons])
+    # merge per-tile values into per-epoch values
+    if Statistics.AVG_DISTANCE in statistics:
+        if len(distance_per_tile) > 1:
+            overall_avg_distance = 0
+            for tile_idx in range(len(distance_per_tile)):
+                overall_avg_distance += distance_per_tile[tile_idx] * (points_per_tile[tile_idx] / overall_num_points)
+            statistics[Statistics.AVG_DISTANCE].append(overall_avg_distance)
         else:
-            second_epoch_polygon = union_all([polygons])
-            intersection_area = first_epoch_polygon.intersection(second_epoch_polygon).area
-            statistics[Statistics.PARTIAL_EPOCHS].append(intersection_area / first_epoch_polygon.area)
+            statistics[Statistics.AVG_DISTANCE].append(distance_per_tile[0])
 
-    return statistics, first_epoch_polygon
+    if Statistics.NUM_POINTS in statistics:
+        statistics[Statistics.NUM_POINTS].append(overall_num_points)
 
-# The processing_order is a list of scenes, which is a list of epochs. Each epoch is a list of filepaths to the point cloud parts that make up this epoch (in most cases just one).
-# If an overlap evaluation should be executed, the first epoch in each scene list should be the reference epoch
-# The computation of the percentage of change points per epoch is not executed by this function, as the approaches differ significantly between the datasets.
-# For textfiles, this function assumes the format as written by io.write_pointcloud
-# The position_offset can be used to shift a point cloud in order to avoid precision errors due to high coordinate values.
-# The rotation_before_projection (a scipy.spatial.transform.Rotation object) can be used if the point clouds are not axis-aligned, i.e., if they have to be rotated before the convex hull in the xy-plane can be computed
-# TODO: configuration object?
-def compute_dataset_statistics(processing_order, statistics_to_compute, output_log_path=None, leave_progress_bar=False, position_offset=[0, 0, 0], txt_has_header=False, txt_delimiter=None, remove_duplicates=False, rotation_before_projection=None, tiled_epochs=False):
+    if Statistics.PARTIAL_EPOCHS in statistics:
+        overlap = overlap_approximator.compute_overlap()
+        if overlap is not None:
+            statistics[Statistics.PARTIAL_EPOCHS].append(overlap)
+
+    if Statistics.CHANGE_POINTS:
+        if len(change_ratios) > 0:
+            statistics[Statistics.CHANGE_POINTS].append(np.average(change_ratios))
+
+
+# This function has several assumptions:
+# - The processing_order is a list of scenes, which is a list of epochs. Each epoch is a list of filepaths to the point cloud parts that make up this epoch (in most cases just one).
+# - If an overlap evaluation should be executed, the first epoch in each scene list is assumed to be the reference epoch
+# - The computation of the percentage of change points per epoch is only executed for LAS/LAZ files, if they contain an extra dimension named "change" (with values > 0 denoting changes). 
+#   For other cases, the change ratio has to be computed separately, as the approaches differ significantly.
+# - For textfiles, this function assumes the format as written by io.write_pointcloud
+def compute_dataset_statistics(processing_order, config : EvaluationConfig):
     statistics = {}
-    for statistic in statistics_to_compute:
+    for statistic in config.statistics_to_compute:
         statistics[statistic] = []
 
-    for scene in tqdm(processing_order, leave=leave_progress_bar):
-        first_epoch_polygon = None
-
+    for scene in tqdm(processing_order, leave=config.leave_progress_bar):
+        overlap_approximator = OverlapApproximator(config.rotation_before_projection)
         for epoch in tqdm(scene, leave=False):
-            if len(epoch) == 1:
-                pointcloud = read_pointcloud_xyz(epoch[0], txt_has_header=txt_has_header, txt_delimiter=txt_delimiter, position_offset=np.asarray(position_offset), remove_duplicates=remove_duplicates)
-            elif tiled_epochs:           # epoch consists of multiple non-overlapping tiles that are too large to merge
-                result, polygon = compute_epoch_statistics_tiled(epoch, statistics_to_compute, remove_duplicates=remove_duplicates, first_epoch_polygon=first_epoch_polygon)
-                first_epoch_polygon = polygon
-                for key in result:
-                    statistics[key].append(result[key])
-                continue
-            else:                       # epoch consists of multiple parts that can be merged
-                pointcloud_parts = []
-                for epoch_part in epoch:
-                    pointcloud = read_pointcloud_xyz(epoch_part, txt_has_header=txt_has_header, txt_delimiter=txt_delimiter, position_offset=np.asarray(position_offset))
-                    pointcloud_parts.append(pointcloud)
-                pointcloud = np.concatenate(pointcloud_parts)
+            compute_statistics_for_epoch(epoch, statistics, config, overlap_approximator, merge_tiles=(len(epoch) > 1 and not config.tiled_epochs))
 
-            if len(pointcloud) < 2:
-                continue
-
-            if Statistics.NUM_POINTS in statistics_to_compute:
-                statistics[Statistics.NUM_POINTS].append(len(pointcloud))
-
-            if Statistics.AVG_DISTANCE in statistics_to_compute:
-                statistics[Statistics.AVG_DISTANCE].append(avg_neighbor_distance(pointcloud))
-
-            if Statistics.PARTIAL_EPOCHS in statistics_to_compute:
-                pointcloud_reduced = reduce_and_remove_outliers(pointcloud, down_sample_factor=0.1, outlier_removal_neighbors=20, outlier_removal_std_ratio=1.0)
-                if rotation_before_projection is not None:
-                    rotation_before_projection.apply(pointcloud_reduced)
-                if first_epoch_polygon is None:
-                    first_epoch_polygon = MultiPoint(pointcloud_reduced[:,0:2]).convex_hull
-                else:
-                    second_epoch_polygon = MultiPoint(pointcloud_reduced[:,0:2]).convex_hull
-                    intersection_area = first_epoch_polygon.intersection(second_epoch_polygon).area
-                    statistics[Statistics.PARTIAL_EPOCHS].append(intersection_area / first_epoch_polygon.area)
-
-    statistics = [np.array(entry) for entry in statistics.values()]
-    print_dataset_statistics(statistics, statistics_to_compute, output_log_path)
-
-
-# This is basically the same as compute_dataset_statistics, with the difference, that un-tiled LAS/LAZ files
-# are assumed as input. It is further assumed that a potential change label (with values > 0 denoting changes) is stored in the user_data
-# if changes_in_all_epochs is False, the first epoch is ignored for computing change points (this is the default)
-def compute_dataset_statistics_las(processing_order, statistics_to_compute, output_log_path=None, leave_progress_bar=False, changes_in_all_epochs=False):
-    statistics = {}
-    for statistic in statistics_to_compute:
-        statistics[statistic] = []
-
-    for scene in tqdm(processing_order, leave=leave_progress_bar):
-        first_epoch_polygon = None
-
-        for idx, epoch in tqdm(list(enumerate(scene)), leave=False):
-            if (idx == 0) and (not changes_in_all_epochs):
-                pointcloud = read_las_in_local_crs(epoch[0])
-            else:
-                pointcloud = read_las_with_changes(epoch[0])
-
-            if len(pointcloud) < 2:
-                continue
-
-            if Statistics.NUM_POINTS in statistics_to_compute:
-                statistics[Statistics.NUM_POINTS].append(len(pointcloud))
-
-            if Statistics.AVG_DISTANCE in statistics_to_compute:
-                statistics[Statistics.AVG_DISTANCE].append(avg_neighbor_distance(pointcloud[:,0:3]))
-
-            if Statistics.PARTIAL_EPOCHS in statistics_to_compute:
-                pointcloud_reduced = reduce_and_remove_outliers(pointcloud[:,0:3], down_sample_factor=0.1, outlier_removal_neighbors=20, outlier_removal_std_ratio=1.0)
-                if first_epoch_polygon is None:
-                    first_epoch_polygon = MultiPoint(pointcloud_reduced[:,0:2]).convex_hull
-                else:
-                    second_epoch_polygon = MultiPoint(pointcloud_reduced[:,0:2]).convex_hull
-                    intersection_area = first_epoch_polygon.intersection(second_epoch_polygon).area
-                    statistics[Statistics.PARTIAL_EPOCHS].append(intersection_area / first_epoch_polygon.area)
-
-            if Statistics.CHANGE_POINTS in statistics_to_compute and (idx > 0 or changes_in_all_epochs):
-                change_ratio = np.count_nonzero(pointcloud[:,3]) / len(pointcloud)
-                statistics[Statistics.CHANGE_POINTS].append(change_ratio)
-    
-    statistics = [np.array(entry) for entry in statistics.values()]
-    print_dataset_statistics(statistics, statistics_to_compute, output_log_path)
+    for key in statistics:
+        statistics[key] = np.array(statistics[key])
+    print_dataset_statistics(statistics, config.output_log_path)

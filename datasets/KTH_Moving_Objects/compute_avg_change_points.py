@@ -2,8 +2,8 @@ import os
 import argparse
 import numpy as np
 from tqdm import tqdm
-from utils.evaluation import write_to_log
-from utils.io import read_pointcloud_xyz
+from utils.evaluation import Statistics, print_dataset_statistics
+from utils.io import read_pointcloud_for_evaluation
 
 parser = argparse.ArgumentParser(prog='KTH Moving Objects - Dataset Avg. Change Points Computation')
 parser.add_argument('input_path', help='The root folder of the dataset')
@@ -12,12 +12,12 @@ parser.add_argument('--output_log', help='Path of a textfile where the results s
 
 def compute_change_percentage(folder_path):
 	full_scan_path = os.path.join(folder_path, 'complete_cloud.pcd')
-	number_of_points = len(read_pointcloud_xyz(full_scan_path))
+	number_of_points = len(read_pointcloud_for_evaluation(full_scan_path))
 
 	number_of_change_points = 0
 	for file in os.scandir(folder_path):
 		if '_label' in file.name and file.name.endswith('.pcd'):
-			number_of_change_points += len(read_pointcloud_xyz(file.path))
+			number_of_change_points += len(read_pointcloud_for_evaluation(file.path))
 
 	return number_of_change_points / number_of_points
 
@@ -42,11 +42,7 @@ def compute_avg_change_points(input_folder, output_log_path, leave_progress_bar=
 	for entry in tqdm(processing_order, leave=leave_progress_bar):
 		change_percentage.append(compute_change_percentage(entry))
 
-	change_percentage = np.array(change_percentage)
-	message = 'Average share of labeled change points per epoch: ' + str(np.average(change_percentage))
-	tqdm.write(message)
-	if output_log_path:
-		write_to_log(output_log_path, message)
+	print_dataset_statistics({Statistics.CHANGE_POINTS : np.array(change_percentage)}, output_log_path)
 
 
 if __name__ == '__main__':

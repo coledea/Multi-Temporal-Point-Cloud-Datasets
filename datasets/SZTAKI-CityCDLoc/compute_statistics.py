@@ -4,7 +4,7 @@ import laspy
 import numpy as np
 from tqdm import tqdm
 from utils.evaluation import Statistics, avg_neighbor_distance, print_dataset_statistics
-from utils.io import read_pointcloud_xyz
+from utils.io import read_pointcloud_for_evaluation
 
 
 parser = argparse.ArgumentParser(prog='SZTAKI-CityCDLoc - Dataset Statistics Computation')
@@ -25,7 +25,7 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 		
 		# epoch 1
 		epoch_1_path = [file.path for file in os.scandir(scene.path) if file.name.endswith('.pcd')][0]
-		pointcloud = read_pointcloud_xyz(epoch_1_path, position_offset=np.array([651026, 238332, 0]))
+		pointcloud = read_pointcloud_for_evaluation(epoch_1_path, position_offset=np.array([651026, 238332, 0]))
 		statistics[Statistics.NUM_POINTS].append(len(pointcloud))
 		statistics[Statistics.AVG_DISTANCE].append(avg_neighbor_distance(pointcloud[:, 0:3]))
 
@@ -38,9 +38,9 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 		statistics[Statistics.AVG_DISTANCE].append(avg_neighbor_distance(pointcloud[:, 0:3]))
 		statistics[Statistics.CHANGE_POINTS].append(np.count_nonzero(pointcloud[:,3]) / len(pointcloud))
 
-	print_dataset_statistics([np.array(entry) for entry in statistics.values()], 
-						statistics.keys(), 
-						output_log_path)
+	for key in statistics:
+		statistics[key] = np.array(statistics[key])
+	print_dataset_statistics(statistics, output_log_path)
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@ import numpy as np
 import os
 from utils.io import FileFormat, las_points_from_pointcloud, get_las_header
 
+# Utility class for the TileWriter
 class SingleTileWriter:
     def __init__(self, output_path, las_header, write_threshold, pointcloud_format):
         self.las_header = las_header
@@ -40,14 +41,14 @@ class SingleTileWriter:
         if self.points_written == 0:
             os.remove(self.output_path)
 
-
+# Writes a point cloud iteratively to disk, sorting it into non-overlapping tiles
+# The tiles can be created from two different specifications: 
+#   bbox + tile_size   -> derive num_tiles
+#   bbox + num_tiles   -> derive tile_size
+# If both are available, the tile_size is used to derive the num_tiles
+# bbox should be a matrix of shape (2,2), with the first row being the minimum, and the second the maximum on the ground plane (xy)
+# The tiles are open to the borders, i.e., points falling outside the borders of a tile are added to the nearest tile
 class TileWriter:
-    # The tiles can be created from two different specifications: 
-    # - bbox + tile_size   -> derive num_tiles
-    # - bbox + num_tiles   -> derive tile_size
-    # If both are available, the tile_size is used to derive the num_tiles
-    # bbox should be a matrix of shape (2,2), with the first row being the minimum, and the second the maximum on the ground plane (xy)
-    # The tiles are open to the borders, i.e., points falling outside the borders of a tile are added to the nearest tile
     def __init__(self, 
                  output_folder,
                  pointcloud_format,

@@ -3,8 +3,8 @@ import argparse
 import numpy as np
 import xml.etree.ElementTree as ET
 from tqdm import tqdm
-from utils.evaluation import write_to_log
-from utils.io import read_pointcloud_xyz
+from utils.evaluation import Statistics, print_dataset_statistics
+from utils.io import read_pointcloud_for_evaluation
 
 
 parser = argparse.ArgumentParser(prog='KTH-3D-TOTAL - Dataset Avg. Change Points Computation')
@@ -46,7 +46,7 @@ def compute_avg_change_points(input_folder, output_log_path, leave_progress_bar=
 	for table in tqdm(list(os.scandir(os.path.join(input_folder, 'pcd-annotated'))), leave=leave_progress_bar):
 		last_epoch_annotations = {}
 		for idx, scan in tqdm(list(enumerate(sorted(os.scandir(table.path), key=sorting_function))), leave=False):
-			overall_points = len(read_pointcloud_xyz(scan.path))
+			overall_points = len(read_pointcloud_for_evaluation(scan.path))
 			label_path = os.path.join(input_folder, 'xml-annotated', table.name, scan.name.split('.')[0] + '.xml')
 
 			if idx == 0:
@@ -75,10 +75,7 @@ def compute_avg_change_points(input_folder, output_log_path, leave_progress_bar=
 
 	change_percentage = np.array(change_percentage)
 	change_percentage = change_percentage[change_percentage >= 0]
-	message = 'Average share of labeled change points per epoch: ' + str(np.average(change_percentage))
-	tqdm.write(message)
-	if output_log_path:
-		write_to_log(output_log_path, message)
+	print_dataset_statistics({Statistics.CHANGE_POINTS : change_percentage}, output_log_path)
 
 
 if __name__ == '__main__':

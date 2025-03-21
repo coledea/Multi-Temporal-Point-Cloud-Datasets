@@ -1,6 +1,6 @@
 import os
 import argparse
-from utils.evaluation import Statistics, compute_dataset_statistics
+from utils.evaluation import Statistics, EvaluationConfig, compute_dataset_statistics
 
 
 parser = argparse.ArgumentParser(prog='Schneeferner - Dataset Statistics Computation')
@@ -18,10 +18,11 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 		if epoch.name.endswith('.laz') and epoch.name != '180419_101733.laz':
 			epochs.append([epoch.path])
 	
-	compute_dataset_statistics([epochs], 
-							[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE, Statistics.PARTIAL_EPOCHS], 
-							output_log_path, 
-							leave_progress_bar)
+	config = EvaluationConfig(statistics_to_compute=[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE, Statistics.PARTIAL_EPOCHS],
+						   output_log_path=output_log_path,
+						   leave_progress_bar=leave_progress_bar)
+	
+	compute_dataset_statistics([epochs], config)
 
 
 if __name__ == '__main__':

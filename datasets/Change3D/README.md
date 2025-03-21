@@ -5,10 +5,10 @@
 [Original Dataset Website](https://kutao207.github.io) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Change3D)
 
 ## Notes
-  - The corresponding paper has been retracted due to errors in the evaluation. A later paper from 2023 again describes the dataset, enriched by synthetic data. This version 2 dataset, however, can not be found anywhere. 
+  - The corresponding paper has been retracted due to errors in the evaluation. A later paper from 2023 again describes the dataset, enriched by synthetic data. However, this second version of the dataset can not be found anywhere. 
   - The paper speaks of "over 78 [...] point cloud pairs", but the dataset actually contains exactly 78 and for 2020 one additional scan with prefix "15_" that is missing in 2016.
-  - The acquisition is unclear. The paper states that "The 3D data from CycloMedia are generated from depth maps instead of original LiDAR scans", but the website and the second paper speak of "vehicle mounted LiDAR sensors"
-  - For computing the label distribution, we extracted cylindrical environments around the POIs and removed the groundplane, as described in the paper. Wang et al. (2023) already provide the data with annotated change labels (which they refer to as the new dataset [SLPCCD]{https://github.com/wangle53/3DCDNet})
+  - The acquisition is unclear. The paper states that "The 3D data from CycloMedia are generated from depth maps instead of original LiDAR scans", but the website and the second paper speak of "vehicle mounted LiDAR sensors".
+  - For computing the label distribution, we extracted cylindrical environments around the POIs and removed the groundplane, as described in the paper. Wang et al. (2023) already provide the data with annotated change labels (which they refer to as the new dataset [SLPCCD]{https://github.com/wangle53/3DCDNet}).
 
 
 

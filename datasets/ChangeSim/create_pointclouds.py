@@ -38,7 +38,7 @@ def extract_pointcloud(input_path, output_path, output_format):
 
 		reconstruction.add_image(depth_image, color_image, pose, segmentation=seg_image)
 
-	write_pointcloud(reconstruction.get_result(), output_path, 'rgbd_reconstruction', output_format, PointcloudFormat.XYZRGBL)
+	write_pointcloud(reconstruction.get_result(), output_path, 'rgbd_reconstruction', output_format, FORMAT_XYZRGBS)
 
 
 def extract_pointclouds(input_path, output_folder, output_format, exclusion_list, inclusion_list):
@@ -62,10 +62,12 @@ def extract_pointclouds(input_path, output_folder, output_format, exclusion_list
 			for scene in os.scandir(split.path):
 				for run in os.scandir(scene.path):
 					if run.path not in exclusion_list:
-						processing_order.append(run.path)
+						processing_order.append([run.path, os.path.join(scene, run)])
 
 		for entry in tqdm(processing_order):
-			extract_pointcloud(entry, output_folder, output_format)
+			output_path = os.path.join(output_folder, entry[1])
+			os.makedirs(output_path, exist_ok=True)
+			extract_pointcloud(entry[0], output_path, output_format)
 
 
 if __name__ == '__main__':

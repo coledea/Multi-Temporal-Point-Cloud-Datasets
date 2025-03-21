@@ -89,9 +89,9 @@ def extract_pointclouds(input_path, output_folder, output_format, exclusion_list
 	if inclusion_list is not None:
 		split_list = [inclusion_list]
 	else:
-		split_list = [x for x in odom_train[0] if x not in exclusion_list]
-	split_list = [x for x in split_list if os.path.exists(os.path.join(data_folder, x))]
-		
+		split_list = [x for x in odom_train if x[0] not in exclusion_list]
+	split_list = [x for x in split_list if os.path.exists(os.path.join(data_folder, x[0]))]
+	
 	boreas = BoreasDataset(data_folder, split=split_list)
 
 	for seq in tqdm(boreas.sequences):

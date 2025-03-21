@@ -1,6 +1,6 @@
 import os
 import argparse
-from utils.evaluation import Statistics, compute_dataset_statistics
+from utils.evaluation import Statistics, EvaluationConfig, compute_dataset_statistics
 
 parser = argparse.ArgumentParser(prog='USyd Campus - Dataset Statistics Computation')
 parser.add_argument('input_path', help='The folder with the extracted point clouds')
@@ -17,12 +17,13 @@ def compute_statistics(input_folder, output_log_path, leave_progress_bar=False):
 		for tile in os.scandir(epoch.path):
 			epochs[-1].append(tile.path)
 
-	compute_dataset_statistics([epochs],
-							[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE], 
-							output_log_path, 
-							leave_progress_bar,
-							remove_duplicates=True,
-							tiled_epochs=True)
+	config = EvaluationConfig(statistics_to_compute=[Statistics.NUM_POINTS, Statistics.AVG_DISTANCE],
+						   output_log_path=output_log_path,
+						   leave_progress_bar=leave_progress_bar,
+						   remove_duplicates=True,
+						   tiled_epochs=True)
+	
+	compute_dataset_statistics([epochs], config)
 
 
 if __name__ == '__main__':

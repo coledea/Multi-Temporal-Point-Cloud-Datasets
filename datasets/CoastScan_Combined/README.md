@@ -5,7 +5,7 @@
 [Original Dataset Website](https://data.4tu.nl/datasets/05477395-f4fe-46dc-bed9-89da04c073cd) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/CoastScan_Combined)
 
 ## Notes
-  - Comprises ALS and PLS/TLS data. The ALS data covers more area than the PLS/TLS data, but within each data type, the covered area remains the same.
+  - The dataset comprises ALS and PLS/TLS data. The ALS data covers a larger area than the PLS/TLS data, but within each acquisition type, the covered area remains the same.
   - The ALS data's z-coordinate is always the same as the y-coordinate, i.e., it is erroneous.
 
 ## Scripts

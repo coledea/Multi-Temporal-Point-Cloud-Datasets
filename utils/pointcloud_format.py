@@ -17,6 +17,7 @@ CHANGE = PointcloudField('change', np.uint8)
 SEMANTIC = PointcloudField('semantic', np.uint8)
 INSTANCE = PointcloudField('instance', np.uint16)
 
+# This class is used to specify the attributes in a point cloud for writing it to disk
 @dataclass
 class PointcloudFormat:
     fields: list

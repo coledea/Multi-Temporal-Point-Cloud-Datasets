@@ -115,7 +115,7 @@ def pointcloud_from_point_message(message):
 
 	return np.column_stack(columns)
 
-# extracts all poses and their timestamps from the rosbag
+# Extracts all poses and their timestamps from a rosbag
 def extract_poses(rosbag_path, typestore, topic_name):
 	timestamps = []
 	poses = []
