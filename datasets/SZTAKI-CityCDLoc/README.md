@@ -5,8 +5,8 @@
 [Original Dataset Website](https://github.com/sztaki-geocomp/Lidar-SCU) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/SZTAKI-CityCDLoc)
 
 ## Notes
-  - The second epoch is split into multiple frames, from which some are available as sparser, but annotated variants (change labels + registration information). We only use the annotated data (all frames fused into one point cloud) for computing the metrics.
-  - Semantic labels are only available for the first epoch
+  - The second epoch is split into multiple frames, from which some are available as sparser but annotated variants (change labels + registration information). We only use the annotated data for computing the statistics (all frames fused into one point cloud).
+  - Semantic labels are only available for the first epoch.
 
 
 

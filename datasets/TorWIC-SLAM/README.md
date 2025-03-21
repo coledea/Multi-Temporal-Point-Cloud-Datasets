@@ -5,7 +5,7 @@
 [Original Dataset Website](https://github.com/Viky397/TorWICDataset) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/TorWIC-SLAM)
 
 ## Notes
-  - The image-based semantic segmentation is not very precise
+  - The provided results of image-based semantic segmentation are not very precise.
 
 
 ## Scripts

@@ -6,8 +6,8 @@
 
 
 ## Notes
-  - According to Schaefer et al. ("Long-Term Urban Vehicle Localization Using Pole Landmarks Extracted from 3-D Lidar Scans", 2019), the provided ground truth poses are not very accurate. We confirmed that a better alignment can be achieved by employing current SLAM solutions (e.g., [FasterLIO](https://github.com/gaoxiang12/faster-lio))
-  - Mapping the color images to the point cloud often results in the tip of trees receiving the color of the sky
+  - According to Schaefer et al. ("Long-Term Urban Vehicle Localization Using Pole Landmarks Extracted from 3-D Lidar Scans", 2019), the provided ground truth poses are not very accurate. We confirmed that a better alignment can be achieved by employing current SLAM solutions (e.g., [FasterLIO](https://github.com/gaoxiang12/faster-lio)).
+  - Mapping the color images to the point cloud often results in the tip of trees receiving the color of the sky.
 
 
 ## Scripts

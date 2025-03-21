@@ -5,8 +5,8 @@
 [Original Dataset Website](https://www.acfr.usyd.edu.au/papers/icra13-underwood-changedetection.shtml) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Underwood_et_al)
 
 ## Notes
-  - Each epoch is split into multiple scans obtained from different positions that can be fused into one pointcloud
-  - In contrast to the other scenes, for the "sim" scene the y-axis faces upwards which gets corrected when applying the given pose
+  - Each epoch is split into multiple scans obtained from different positions that can be fused into one point cloud.
+  - In contrast to the other scenes, for the "sim" scene the y-axis faces upwards which gets corrected when applying the given pose.
 
 
 

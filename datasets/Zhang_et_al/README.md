@@ -6,7 +6,7 @@
 
 ## Notes
   - One epoch is provided as ALS point cloud, the other one as photogrammetric point cloud
-  - The ALS point cloud is split into ground and non-ground points
+  - The ALS point cloud is split into ground and non-ground points.
 
 ## Scripts
 * `compute_statistics.py` computes the minimum, median, and maximum of the number of points and average point neighbor distance across all epochs

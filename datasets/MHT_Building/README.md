@@ -5,7 +5,7 @@
 [Original Dataset Website](https://lcas.lincoln.ac.uk/nextcloud/shared/datasets/mht_rgbd.html) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/MHT_Building)
 
 ## Notes
-  - The released dataset corresponds to the "laboratory dataset" described in the paper
+  - The released dataset corresponds to the "laboratory dataset" described in the paper.
   - The website states that "each rosbag with a 3D prefix contains a depth/color image, camera information, robot position, tf data, laser scan and person detection [...]" and "each rosbag with a 2D prefix contains AMCL position estimates, robot odometry, tf data and laser scans". Actually, the 3D rosbags contain depth and color images, robot poses, and laser scans, while the 2D rosbags contain robot poses and laser scans. No information is provided regarding camera intrinsics.
   - The full download contains more data (two additional days) than the website lists as individual downloadable files. For these additional scans (3D_2013-08-22 and 3D_2013-08-23), four scan locations instead of three are recorded. However, the rosbags only contain color and depth images without poses.
   - Some of the rosbags are corrupted (the ones with a ".active" file extension), probably due to the recording being terminated prematurely.

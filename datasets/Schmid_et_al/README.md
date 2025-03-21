@@ -7,7 +7,7 @@
 ## Notes
   - The labels have to be mapped during backprojection by mapping the instance ID to the corresponding class/change.
   - For points outside of windows, the depth images contain pixels with very high depth values that can interfere with the reconstruction.
-  - Also provides additional (semantic/instance) annotations in image format for two of the [3RScan](https://github.com/WaldJohannaU/3RScan) scenes.
+  - The dataset also provides additional semantic/instance annotations in image format for two of the [3RScan](https://github.com/WaldJohannaU/3RScan) scenes.
 
 
 ## Scripts

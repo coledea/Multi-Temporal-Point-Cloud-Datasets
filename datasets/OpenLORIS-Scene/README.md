@@ -6,7 +6,7 @@
 
 ## Notes
   - The depth images are quite noisy and the ground truth poses are not perfect (as also mentioned in a Github issue and the paper itself).
-  - Some scenes have only little overlap between the epochs (e.g., the office scene)
+  - Some scenes have only little overlap between the epochs (e.g., the office scene).
 
 
 ## Scripts

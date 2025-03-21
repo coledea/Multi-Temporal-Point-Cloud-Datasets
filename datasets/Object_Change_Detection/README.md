@@ -5,8 +5,7 @@
 [Original Dataset Website](https://www.acin.tuwien.ac.at/en/vision-for-robotics/software-tools/object-change-detection-dataset-of-indoor-environments) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Object_Change_Detection)
 
 ## Notes
-  - During writing the paper, the download link for the dataset stopped working (timeout). It is unclear whether the dataset was removed or is only temporarily unavailable. In any case, another dataset that uses the same raw scans is available [here](https://doi.org/10.48436/y3ggy-hxp10). The point clouds differ very slightly and are split into surfaces. Also the first epoch is not available. However, ROSbags for all scans are provided.
-
+  - During writing the paper, the download link for the dataset stopped working (timeout). It is unclear whether the dataset was removed or is only temporarily unavailable. In any case, another dataset that uses the same raw scans is available [here](https://doi.org/10.48436/y3ggy-hxp10). The point clouds differ very slightly and are split into surfaces. Also the first epoch is not available. However, ROS bags for all scans are provided.
 
 
 ## Scripts

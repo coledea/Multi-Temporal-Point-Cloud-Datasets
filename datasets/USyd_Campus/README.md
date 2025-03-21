@@ -6,10 +6,10 @@
 
 
 ## Notes
-- Originally, a web page was available for the dataset, describing its use in more detail. However, the website is not available anymore. Parts of it can be accessed through the Internet Archive.
-- A code release is available for the dataset at https://gitlab.acfr.usyd.edu.au/its/dataset_metapackage. The code is a bit hard to find, as the original dataset web page where the code was linked no longer exists.
-- The archives for the weeks 30, 33, and 34 appear to be corrupted. The ROS bag files can not be extracted properly.
-- While a number of semantically labeled images are available, they are not matched to acquisition times and corresponding lidar scans. Therefore, these images can not be used for projecting semantic labels to the point cloud
+- Originally, a web page was available for the dataset, describing its use in more detail. However, the website is not available anymore. Part of it can be accessed through the Internet Archive.
+- A code release is available for the dataset [here](https://gitlab.acfr.usyd.edu.au/its/dataset_metapackage). The code is a bit hard to find, as the original dataset web page where the code was linked no longer exists.
+- The zip archives for the weeks 30, 33, and 34 appear to be corrupted. The ROS bag files can not be extracted properly.
+- While a number of semantically labeled images are available, they are not matched to acquisition times and corresponding LiDAR scans. Therefore, these images can not be used for projecting semantic labels to the point cloud.
 - Although poses are provided for the LiDAR scans, the resulting point cloud is quite noisy (also due to many moving objects) and exihibts significant drift. In the initial part of the route, to which the vehicle returns at the end, height discrepancies of 100-200 meters can occur between the start and end position. More accurate results could be achieved by employing a SLAM approach to compute more precise poses and achieve proper loop closure.
 
 ## Scripts

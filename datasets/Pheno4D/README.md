@@ -5,7 +5,7 @@
 [Original Dataset Website](https://www.ipb.uni-bonn.de/data/pheno4d) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/Pheno4D)
 
 ## Notes
-  - Only every second scan is labeled with instance labels. For the maize plants, also semantic labels are available.
+  - Only every second scan has instance labels. For the maize plants, also semantic labels are available.
 
 ## Scripts
 * `compute_statistics.py` computes the minimum, median, and maximum of the number of points and average point neighbor distance across all epochs

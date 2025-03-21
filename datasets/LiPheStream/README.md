@@ -5,10 +5,10 @@
 [Original Dataset Website](https://etsin.fairdata.fi/dataset/b60c308a-b619-40b9-a98e-f7cba5cc906c) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/LiPheStream)
 
 ## Notes
-  - The point clouds are sorted according to their tree species. Therefore, even though there don't exist semantic/instance labels in the point clouds, semantic/instance information is somehow available. As the point clouds are geo-referenced, the individual tree point clouds could be merged into a larger area with the corresponding semantic/instance information.
+  - The point clouds are sorted according to their tree species. Since the point clouds are georeferenced, the individual tree point clouds could be merged into a larger point cloud with semantic/instance information derived from the folder structure and point cloud IDs.
   - The individual trees were automatically segmented from a full-area scan. The segmentation is erroneous in some cases.
-  - The trees are divided into different scan quality categories. It is not entirely clear, what quality in this context means and how it is determined. It seems to have something to do with the segmentation results.
-  - File `210216_180502_12456_1_2.laz` is erroneous and can't be read
+  - The trees are divided into different scan quality categories. It is not entirely clear what quality in this context means and how it is determined. It seems to have something to do with the segmentation results.
+  - File `210216_180502_12456_1_2.laz` is erroneous and can't be read.
 
 
 ## Scripts
