@@ -4,6 +4,7 @@ import argparse
 import numpy as np
 from tqdm import tqdm
 from utils.pointcloud_format import FORMAT_XYZRGBS
+from utils.pointcloud_processing import remove_duplicates
 from utils.io import FileFormat, write_pointcloud
 from utils.pointcloud_creation import RGBDReconstruction, get_pose_matrix_from_pose
 
@@ -38,7 +39,7 @@ def extract_pointcloud(input_path, output_path, output_format):
 
 		reconstruction.add_image(depth_image, color_image, pose, segmentation=seg_image)
 
-	write_pointcloud(reconstruction.get_result(), output_path, 'rgbd_reconstruction', output_format, FORMAT_XYZRGBS)
+	write_pointcloud(remove_duplicates(reconstruction.get_result()), output_path, 'rgbd_reconstruction', output_format, FORMAT_XYZRGBS)
 
 
 def extract_pointclouds(input_path, output_folder, output_format, exclusion_list, inclusion_list):

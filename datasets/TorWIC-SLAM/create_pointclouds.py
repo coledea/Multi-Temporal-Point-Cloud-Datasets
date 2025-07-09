@@ -18,7 +18,7 @@ parser.add_argument('--output_folder', help='The folder into which the pointclou
 parser.add_argument('--output_format', help='The format of the output point cloud', type=FileFormat, choices=[format.value for format in FileFormat], default=FileFormat.LAZ)
 parser.add_argument('--exclusion_list', help='A list of epochs to exclude for reconstruction, e.g., "june_15_2022/Aisle_CCW_Run_1"', nargs='*', type=str, default=[])
 parser.add_argument('--inclusion_list', help='A list of epochs to include (overwrites exclusion list)', nargs='+', type=str)
-parser.add_argument('--num_tiles', help='The number of tiles into which the scene should be divided in x and y direction', nargs=2, default=[2,2])
+parser.add_argument('--num_tiles', help='The number of tiles into which the scene should be divided in x and y direction', nargs=2, type=int, default=[2,2])
 
 T_lidar_to_leftcam = np.eye(4)
 T_lidar_to_leftcam[:3,:3] = R.from_quat([-0.6116725, 0.39292797, -0.3567415, 0.58668551]).as_matrix()
