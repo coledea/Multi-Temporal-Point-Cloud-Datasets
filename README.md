@@ -5,6 +5,9 @@
 This repository contains code for processing the datasets we surveyed in our paper (currently under review).
 Additionally, for each dataset, possible issues and pecularities are listed in the corresponding README file. For more information on the characteristics of the different datasets, please refer to our paper and the accompanying [website](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/). The website facilitates improved exploration of the available datasets via sorting and filtering functionality.
 
+Originally, the survey included five additional datasets (the KTH datasets) that became unavailable during the review process.
+Although we excluded them from the review, we have kept the corresponding processing code in this repository for documentation purposes.
+
 ## Contents of this Repository
 ```
 |-- config           # Configuration files for the pointcloud_processing.py script

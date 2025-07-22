@@ -1,4 +1,4 @@
-# The NTU VIRAL Dataset
+# The Nothing Stands Still (NSS) 2025 Dataset
 
 <img src="./../../images/NSS.png" width="400"/>
 
@@ -15,7 +15,7 @@
 The expected folder structure for the data is as follows:
 
 ```
-NSS_2025
+NSS
   |-- raw
       |-- point_cloud
           |-- Bldg1_Stage1_Spot0.ply

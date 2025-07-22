@@ -5,6 +5,7 @@
 [Original Dataset Website](https://strands.pdc.kth.se/public/KTH_labelled_moving_objects/readme.html) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/KTH_Moving_Objects)
 
 ## Notes
+  - *Important Note:* This dataset appears to be not available anymore.
   - This dataset extends the KTH Longterm Label dataset with additional data from more waypoints. This additional data contains fewer labels (10) but only for objects that were consistently located in different positions in multiple rooms.
   - It seems that the waypoint IDs do not match between this and the other KTH datasets.
   - For WayPoint2 and WayPoint29, only one scan exists.

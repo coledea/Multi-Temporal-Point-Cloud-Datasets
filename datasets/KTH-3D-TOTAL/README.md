@@ -4,7 +4,8 @@
 
 [Original Dataset Website](https://strands.pdc.kth.se/public/kth-3d-total/readme.html) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/KTH-3D-TOTAL)
 
-## Notes  
+## Notes 
+  - *Important Note:* This dataset appears to be not available anymore.
   - The point clouds are available as text files and PCD files.
   - The full archive download link is not working anymore.
   - A downsampled version and a cropped version is available for each scan. In the latter case, everything except the tabletop has been removed and the scene has been aligned with the coordinate axes.

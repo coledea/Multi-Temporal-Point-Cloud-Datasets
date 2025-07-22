@@ -36,6 +36,7 @@ def get_las_header(pointcloud_format, offsets=np.array([0, 0, 0]), precision=100
     return las_header
 
 # Converts a point cloud stored as numpy array into laspy.LasData for writing it to disk
+# TODO: according to the LAS/LAZ specifications, color has to be normalized to 16bit
 def las_points_from_pointcloud(pointcloud, pointcloud_format, las_header):
     las_points = laspy.LasData(las_header)
     for idx, field in enumerate(pointcloud_format.fields):

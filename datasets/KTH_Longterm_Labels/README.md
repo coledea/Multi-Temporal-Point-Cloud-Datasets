@@ -5,6 +5,7 @@
 [Original Dataset Website](https://strands.pdc.kth.se/public/KTH_longterm_dataset_labels/readme.html) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/KTH_Longterm_Labels)
 
 ## Notes  
+  - *Important Note:* This dataset appears to be not available anymore.
   - This is an extension of the KTH Longterm dataset by semantic labels for Waypoint16. However, the point clouds are smaller, because only the RGB-D images for a single height were used.
   - The labels are available in form of image annotations that would have to be combined with the depth and color images to reconstruct a point cloud. 
   - For each object, only one label image is available, even if the object appears in multiple images. Additionally, not all objects are labeled.

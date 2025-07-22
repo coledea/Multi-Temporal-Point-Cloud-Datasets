@@ -5,6 +5,7 @@
 [Original Dataset Website](https://strands.pdc.kth.se/public/metric_sweeps_201312/readme.html) | [Additional Dataset Details](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/details/KTH_Meta-rooms)
 
 ## Notes
+  - *Important Note:* This dataset appears to be not available anymore.
 
 ## Scripts
 * `compute_statistics.py` computes the minimum, median, and maximum of the number of points and average point neighbor distance across all epochs. Also computes the share of partial epochs.
