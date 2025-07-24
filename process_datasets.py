@@ -21,7 +21,7 @@ def get_command_for_processing_step(step, dataset_name, dataset_root, has_create
     if not os.path.exists(script_path):
         return None
 
-    command_parts = ['python -m', '.'.join(script_path_parts)]
+    command_parts = ['python', '-m', '.'.join(script_path_parts)]
     for argument in step['arguments']:
         argument_value = step['arguments'][argument]
         if isinstance(argument_value, str):
@@ -35,7 +35,7 @@ def get_command_for_processing_step(step, dataset_name, dataset_root, has_create
         if argument.startswith('--'):
             command_parts.append(argument)
         command_parts.append(argument_value)
-    return ' '.join(command_parts)
+    return command_parts
 
 
 if __name__ == '__main__':

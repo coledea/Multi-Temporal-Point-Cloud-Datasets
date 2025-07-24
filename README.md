@@ -26,6 +26,7 @@ Although we excluded them from the review, we have kept the corresponding proces
 ```
 
 The code in this repository is written in Python and is not optimized for performance (as we had to run it only once). Nevertheless, it might serve as a useful starting point for working with the respective datasets. For each dataset, at least one script is provided to compute various statistics, such as the average number of points, point spacings, or the number of partial epochs. For datasets that have to be transformed into a unified point cloud first, a corresponding script is provided as well. Additionally, some dataset-specific scripts are available.
+We commit to maintaining this repository until the end of 2026. After that, maintenance (i.e., bug fixes) will no longer be guaranteed.
 
 ## Usage Instructions
 
@@ -48,3 +49,16 @@ We provide one configuration file for processing all datasets with (nearly) all 
 
 Please be aware that this may take very long.
 We also provide an additional example configuration file that you can adapt to your needs.
+
+### Docker
+We provide a Dockerfile for setting up the required environment and dependencies:
+
+`docker build -t multi-temporal-point-cloud-datasets-survey .`
+
+We also pre-built a docker image to ensure the longevity of the runtime environment. Instead of building the image yourself, you can just call:
+
+`docker pull olewegen/multi-temporal-point-cloud-datasets-survey`
+
+Using an interactive shell, you can then start the scripts you want to execute within the container:
+
+`docker run -it --rm -v /path/to/datasets:/usr/local/app/data multi-temporal-point-cloud-datasets-survey`
