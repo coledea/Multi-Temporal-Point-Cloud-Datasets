@@ -5,7 +5,7 @@
 This repository contains code for processing the datasets we surveyed in our paper:
 [**A Survey of Publicly Available Multi-Temporal Point Cloud Datasets**](https://doi.org/10.1016/j.isprsjprs.2025.11.003).
 
-Additionally, for each dataset, possible issues and pecularities are listed in the corresponding README file. For more information on the characteristics of the different datasets, please refer to our paper and the accompanying [website](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/). The website facilitates improved exploration of the available datasets via sorting and filtering functionality.
+Additionally, for each dataset, possible issues and pecularities are listed in the corresponding README file. For more information on the characteristics of the different datasets, please refer to our paper and the accompanying [website](https://hpicgs.github.io/multi-temporal-point-cloud-datasets-survey/). The website facilitates improved exploration of the available datasets via sorting and filtering functionality. For links to resources/datasets that were out of scope for the survey but may still be of interest, see the [additional resources](Additional_Resources.md).
 
 Originally, the survey included five additional datasets (the KTH datasets) that became unavailable during the review process.
 Although we excluded them from the review, we have kept the corresponding processing code in this repository for documentation purposes.
@@ -25,6 +25,7 @@ Although we excluded them from the review, we have kept the corresponding proces
     |-- rosbags.py                # Functionalities for extracting data from ROS bagfiles
     |-- tile_writer.py            # A tile-based writer for large point clouds
 |-- process_datasets.py           # A master script for processing multiple datasets in row
+|-- Additional_Resources.md       # Links to resources/datasets that were out of scope for the survey
 ```
 
 The code in this repository is written in Python and is not optimized for performance (as we had to run it only once). Nevertheless, it might serve as a useful starting point for working with the respective datasets. For each dataset, at least one script is provided to compute various statistics, such as the average number of points, point spacings, or the number of partial epochs. For datasets that have to be transformed into a unified point cloud first, a corresponding script is provided as well. Additionally, some dataset-specific scripts are available.
