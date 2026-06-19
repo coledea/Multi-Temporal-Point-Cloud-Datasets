@@ -62,7 +62,7 @@ def load_labels(labels_path, changes_path):
 			if line.startswith('#'):
 				current_change_label += 1
 			else:
-				changes[line] = current_change_label
+				changes[line.rstrip()] = current_change_label
 
 	# the label_dict maps instance IDs to classes and change labels for the two runs
 	label_dict = {}
